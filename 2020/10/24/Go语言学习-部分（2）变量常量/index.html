@@ -10,15 +10,15 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="一、运行程序相关的命令:  go build:用于测试编译包，在项目目录下生成可执行文件（有main包）  go install:主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）   go run:直接编译运行 .go文件，并输出结果">
+  <meta name="description" content="变量和常量声明变量变量声明格式：   var 变量名  变量类型   以关键字var开头，变量类型放在变量的后面，行尾无需分号。举个例子：   var name string var age int var isOk bool">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://tianyi0801.github.io/2020/10/23/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%881%EF%BC%89/index.html">
+<meta property="og:url" content="http://tianyi0801.github.io/2020/10/24/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%882%EF%BC%89%E5%8F%98%E9%87%8F%E5%B8%B8%E9%87%8F/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="一、运行程序相关的命令:  go build:用于测试编译包，在项目目录下生成可执行文件（有main包）  go install:主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）   go run:直接编译运行 .go文件，并输出结果">
+<meta property="og:description" content="变量和常量声明变量变量声明格式：   var 变量名  变量类型   以关键字var开头，变量类型放在变量的后面，行尾无需分号。举个例子：   var name string var age int var isOk bool">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-23T14:42:58.515Z">
-<meta property="article:modified_time" content="2020-10-23T14:44:12.506Z">
+<meta property="article:published_time" content="2020-10-24T13:44:55.769Z">
+<meta property="article:modified_time" content="2020-10-24T13:46:27.933Z">
 <meta property="article:author" content="徐天一">
 <meta name="twitter:card" content="summary">
   
@@ -211,50 +211,43 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Go语言学习-部分（1）" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Go语言学习-部分（2）变量常量" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
   <div class="article-entry" itemprop="articleBody">
     
-    <h4 id="一、运行程序相关的命令"><a href="#一、运行程序相关的命令" class="headerlink" title="一、运行程序相关的命令:"></a>一、运行程序相关的命令:</h4><p>  <code>go build</code>:用于测试编译包，在项目目录下生成可执行文件（有main包）<br>  <code>go install</code>:主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH/pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH/bin）<br>   <code>go run</code>:直接编译运行 .go文件，并输出结果。<br>   go build 和 go install 的区别：</p>
+    <h4 id="变量和常量"><a href="#变量和常量" class="headerlink" title="变量和常量"></a>变量和常量</h4><h6 id="声明变量"><a href="#声明变量" class="headerlink" title="声明变量"></a>声明变量</h6><p><strong>变量声明格式：</strong></p>
+<blockquote>
+<ol>
+<li>var 变量名  变量类型</li>
+</ol>
+</blockquote>
+<p>以关键字<code>var</code>开头，变量类型放在变量的后面，行尾无需分号。举个例子：</p>
+<blockquote>
+<ol>
+<li>var name string</li>
+<li>var age int</li>
+<li>var isOk bool</li>
+</ol>
+</blockquote>
 <a id="more"></a>
-<ol>
-<li>相同点<br>都能生成可执行文件</li>
-<li>不同点<br>go build 不能生成包文件, go install 可以生成包文件<br>go build 生成可执行文件在当前目录下， go install 生成可执行文件在bin目录下（$GOPATH/bin）</li>
-</ol>
-<p><strong>简单理解</strong>：<br>  go install就相当于先go build 生成可执行文件，然后将这个可执行文件放到bin目录下。</p>
-<h4 id="二、跨平台编译-交叉编译-："><a href="#二、跨平台编译-交叉编译-：" class="headerlink" title="二、跨平台编译(交叉编译)："></a>二、跨平台编译(交叉编译)：</h4><p>在go build或go install之前先执行一下代码：</p>
-<blockquote>
-<p>SET CGO_ENABLED=0  //禁用CGO<br>SET GOOS=linux   //目标平台是Linux<br>SET GOARCH=amd64   //目标处理器架构</p>
-</blockquote>
-<p>之后再执行<code>go build</code> 或 <code>go install</code>，得到的就是Linux平台运行的可执行文件了。<br>Mac 下编译Linux和Windows平台64位可执行程序：</p>
-<blockquote>
-<ol>
-<li>CGO_ENABLED=0  GOOS=linux  GOARCH=amd64  go build<ol start="2">
-<li>CGO_ENABLED=0  GOOS=windows  GOARCH=amd64  go build</li>
-</ol>
-</li>
-</ol>
-</blockquote>
-<p>Linux下编译Mac和Windows平台64位可执行程序：</p>
-<blockquote>
-<ol>
-<li>CGO_ENABLED=0  GOOS=darwin  GOARCH=amd64  go build</li>
-<li>CGO_ENABLED=0  GOOS=windows  GOARCH=amd64  go build</li>
-</ol>
-</blockquote>
-<p>Windows下编译Mac平台的64位可执行程序：</p>
-<blockquote>
-<ol>
-<li>SET CGO_ENABLED=0  //禁用CGO</li>
-<li>SET GOOS=darwin   //目标平台是Mac</li>
-<li>SET GOARCH=amd64   //目标处理器架构</li>
-<li>go build</li>
-</ol>
-</blockquote>
-<p>注：开发一般都是Windows平台或者Mac平台、</p>
-<br>
-==现在开启Go语言学习之旅==
+<p><strong>批量声明：</strong><br>每声明一个变量就要写一个var关键字比较繁琐，所以可以如下批量声明：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> (</span><br><span class="line">	a <span class="keyword">string</span></span><br><span class="line">	b <span class="keyword">int</span> </span><br><span class="line">	c <span class="keyword">bool</span></span><br><span class="line">	d <span class="keyword">float32</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><strong>Go语言中变量声明了必须使用，不适用就不能编译通过</strong><br><code>go fmt</code>命令：格式化go语言代码，让所有人写的格式一样。</p>
+<p><strong>变量初始化</strong><br>声明变量同时赋值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s <span class="keyword">string</span> = <span class="string">&quot;asd&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>类型推导</strong><br>可以根据给变量赋的值推导出来变量的类型</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = <span class="string">&quot;21&quot;</span></span><br><span class="line"><span class="keyword">var</span> str = <span class="string">&quot;adfa&quot;</span> <span class="comment">//全局变量声明</span></span><br></pre></td></tr></table></figure>
+<p><strong>简短变量声明</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s := <span class="string">&quot;哈哈&quot;</span> <span class="comment">//只能在函数里面用，属于局部变量</span></span><br></pre></td></tr></table></figure>
+<p><strong>匿名变量</strong><br>在使用多重赋值时，如果想要忽略某个值，可以使用<code>匿名变量（anonymous variable）</code>。匿名变量用一个下划线<code>_</code>表示，例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">foo</span><span class="params">()</span> <span class="params">(<span class="keyword">int</span>,<span class="keyword">string</span>)</span></span>&#123;</span><br><span class="line">     <span class="keyword">return</span> <span class="number">10</span>,<span class="string">&quot;mi&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    x,_ := foo()</span><br><span class="line">	_,y := foo()</span><br><span class="line">	fmt.Println(<span class="string">&quot;x=&quot;</span>,x)</span><br><span class="line">	fmt.Println(<span class="string">&quot;y=&quot;</span>,y)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>注：</code> 匿名变量不占用命名空间，不会分配内存，所以匿名变量之间不存在重复声明。（在lua等编程语言里，匿名变量也叫做哑元变量）<br><code>1.函数外的每个语句都必须以关键字开始（var, const, func等） </code><br><code> 2. :=不能使用在函数外</code><br><code>3. _ 多用于占位，表示忽略值</code><br><strong>常量</strong><br>变量声明就是把var改成了const</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> a = <span class="string">&quot;asdf&quot;</span> <span class="comment">//这里的常量不同意java 定义后就不能修改</span></span><br><span class="line"><span class="keyword">const</span> b = <span class="number">123</span>  <span class="comment">//运行期间不会修改的量（类似java中用final修饰了的量）</span></span><br></pre></td></tr></table></figure>
+<p>同时常量的声明也可以批量声明<br><code>（批量声明常量时，如果某行声明后没有赋值，则默认和上一行一致）</code></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span>(</span><br><span class="line">	n1 = <span class="number">100</span></span><br><span class="line">	n2</span><br><span class="line">	n3</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+<p><strong>iota</strong>:<br><code>iota</code> 是Go语言的常量计数器，只能在<code>常量</code>的表达式中使用<br><code>iota</code> <code>在const关键字出现时被重置为0；const每新增一行常量声明将使</code> <code>iota</code> <code>计数一次</code>（iota可理解为const语句块中的行索引）。使用iota能简化定义，在定义·枚举类型·时很有用。<br>举个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//普通</span></span><br><span class="line"><span class="keyword">const</span>(</span><br><span class="line">	n1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">	n2 		  <span class="comment">//1</span></span><br><span class="line">	n3   	  <span class="comment">//2</span></span><br><span class="line">	n4		  <span class="comment">//3</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">//插队</span></span><br><span class="line"><span class="keyword">const</span>(</span><br><span class="line">	n1 = <span class="literal">iota</span> <span class="comment">//0</span></span><br><span class="line">	n2 = <span class="literal">iota</span> <span class="comment">//1</span></span><br><span class="line">	_  = <span class="literal">iota</span> <span class="comment">//2  这里 _ 匿名变量，表示这个值抛弃了，这样n1,n2,n3就是0，1，3</span></span><br><span class="line">	n3		  <span class="comment">//3</span></span><br><span class="line">)</span><br><span class="line"><span class="comment">//多个常量声明在一起</span></span><br><span class="line"><span class="keyword">const</span>(</span><br><span class="line">d1, d2 = <span class="literal">iota</span> + <span class="number">1</span>, <span class="literal">iota</span> +<span class="number">2</span> <span class="comment">//d1:1   d2:2</span></span><br><span class="line"><span class="comment">//const每新增一行常量声明将使` `iota` `计数一次`       </span></span><br><span class="line">d3, d4 = <span class="literal">iota</span> + <span class="number">1</span>, <span class="literal">iota</span> + <span class="number">2</span> <span class="comment">//d3:2  d4:3</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment">//定义数量级 </span></span><br><span class="line"><span class="keyword">const</span>(</span><br><span class="line">	_ = <span class="literal">iota</span></span><br><span class="line">	KB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)  <span class="comment">//1左移10*1位 =  1^10 = 1024</span></span><br><span class="line">	MB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)  <span class="comment">//1左移10*2位 =  1^20</span></span><br><span class="line">	GB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">	TB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">	PB = <span class="number">1</span> &lt;&lt; (<span class="number">10</span> * <span class="literal">iota</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
     
 
@@ -301,7 +294,7 @@
         </li>
         <li>
           <strong>本文链接：</strong>
-          <a href="http://tianyi0801.github.io/2020/10/23/Go语言学习-部分（1）/" title="" target="_blank">http://tianyi0801.github.io/2020/10/23/Go语言学习-部分（1）/</a>
+          <a href="http://tianyi0801.github.io/2020/10/24/Go语言学习-部分（2）变量常量/" title="" target="_blank">http://tianyi0801.github.io/2020/10/24/Go语言学习-部分（2）变量常量/</a>
         </li>
         
         <li>
@@ -368,7 +361,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/10/23/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%881%EF%BC%89/" alt="微信分享二维码"> -->
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/10/24/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%882%EF%BC%89%E5%8F%98%E9%87%8F%E5%B8%B8%E9%87%8F/" alt="微信分享二维码"> -->
     </div>
 </div>
 
@@ -383,17 +376,8 @@
 
 <nav id="article-nav">
   
-    <a href="/2020/10/24/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%882%EF%BC%89%E5%8F%98%E9%87%8F%E5%B8%B8%E9%87%8F/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          (no title)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/10/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20go%20build%20%E5%92%8C%20go%20install/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/10/23/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%881%EF%BC%89/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title"></div>
       <i class="icon-circle-right"></i>
     </a>
