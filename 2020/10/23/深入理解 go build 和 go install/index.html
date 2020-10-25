@@ -10,15 +10,15 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="title:深入理解go build和go install  1.作用go build：用于测试编译包，在项目目录下生成可执行文件（有main包）。 go install：  主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）">
+  <meta name="description" content="1.作用go build：用于测试编译包，在项目目录下生成可执行文件（有main包）。 go install：  主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
 <meta property="og:url" content="http://tianyi0801.github.io/2020/10/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20go%20build%20%E5%92%8C%20go%20install/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="title:深入理解go build和go install  1.作用go build：用于测试编译包，在项目目录下生成可执行文件（有main包）。 go install：  主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）">
+<meta property="og:description" content="1.作用go build：用于测试编译包，在项目目录下生成可执行文件（有main包）。 go install：  主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-23T12:58:03.875Z">
-<meta property="article:modified_time" content="2020-10-24T14:11:26.516Z">
+<meta property="article:modified_time" content="2020-10-25T12:03:05.150Z">
 <meta property="article:author" content="徐天一">
 <meta name="twitter:card" content="summary">
   
@@ -216,10 +216,7 @@
     
   <div class="article-entry" itemprop="articleBody">
     
-    <hr>
-<p>title:深入理解go build和go install</p>
-<hr>
-<h3 id="1-作用"><a href="#1-作用" class="headerlink" title="1.作用"></a>1.作用</h3><p><strong>go build</strong>：用于测试编译包，在项目目录下生成可执行文件（有main包）。</p>
+    <h3 id="1-作用"><a href="#1-作用" class="headerlink" title="1.作用"></a>1.作用</h3><p><strong>go build</strong>：用于测试编译包，在项目目录下生成可执行文件（有main包）。</p>
 <p><strong>go install</strong>：</p>
 <blockquote>
 <p>主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH/pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH/bin）</p>
