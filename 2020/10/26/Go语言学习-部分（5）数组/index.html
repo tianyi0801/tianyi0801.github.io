@@ -6,15 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://tianyi0801.github.io">
-  <title>Archives: 2020/10 | Hexo</title>
+  <title>Hexo</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
+  <meta name="description" content="数组 存放元素的容器 必须存放指定元素的类型和容量（长度） 数组的长度也是数组的一部分  123456var a [3]bool&#x2F;&#x2F;长度为3类型为bool的数组var b [4]bool&#x2F;&#x2F;长度为4类型为bool的数组var c &#x3D; [2]int&amp;#123;1,2&amp;#125;d :&#x3D; [3]int&amp;#123;1,2&amp;#125;&#x2F;&#x2F;d:1,2,0  不写就补0，所以有了方法三这两个数组不能作比较，因">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://tianyi0801.github.io/archives/2020/10/index.html">
+<meta property="og:url" content="http://tianyi0801.github.io/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%885%EF%BC%89%E6%95%B0%E7%BB%84/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="数组 存放元素的容器 必须存放指定元素的类型和容量（长度） 数组的长度也是数组的一部分  123456var a [3]bool&#x2F;&#x2F;长度为3类型为bool的数组var b [4]bool&#x2F;&#x2F;长度为4类型为bool的数组var c &#x3D; [2]int&amp;#123;1,2&amp;#125;d :&#x3D; [3]int&amp;#123;1,2&amp;#125;&#x2F;&#x2F;d:1,2,0  不写就补0，所以有了方法三这两个数组不能作比较，因">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-26T13:26:16.855Z">
+<meta property="article:modified_time" content="2020-10-26T13:27:57.800Z">
 <meta property="article:author" content="徐天一">
 <meta name="twitter:card" content="summary">
   
@@ -207,266 +211,203 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Go语言学习-部分（5）数组" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+  <div class="article-entry" itemprop="articleBody">
     
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%885%EF%BC%89%E6%95%B0%E7%BB%84/" class="archive-article-date">
-        <time datetime="2020-10-26T13:26:16.855Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
+    <h3 id="数组"><a href="#数组" class="headerlink" title="数组"></a>数组</h3><ol>
+<li>存放元素的容器</li>
+<li>必须存放指定元素的类型和容量（长度）</li>
+<li>数组的长度也是数组的一部分</li>
+</ol>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a [<span class="number">3</span>]<span class="keyword">bool</span><span class="comment">//长度为3类型为bool的数组</span></span><br><span class="line"><span class="keyword">var</span> b [<span class="number">4</span>]<span class="keyword">bool</span><span class="comment">//长度为4类型为bool的数组</span></span><br><span class="line"><span class="keyword">var</span> c = [<span class="number">2</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>&#125;</span><br><span class="line">d := [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>&#125;<span class="comment">//d:1,2,0  不写就补0，所以有了方法三</span></span><br><span class="line">这两个数组不能作比较，因为他们是不同类型的</span><br><span class="line">原因：长度也是类型的一部分</span><br></pre></td></tr></table></figure>
+<a id="more"></a>
+<p><strong>数组的初始化</strong><br>数组如果不初始化默认都是零值<br>（布尔：false，整形和浮点型：0，string：””）<br><strong>方法一</strong>：<br>初始化数组时可以使用初始化列表来设置数组元素的值</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> testArray [<span class="number">3</span>]<span class="keyword">int</span>                        <span class="comment">//数组会初始化为int类型的零值</span></span><br><span class="line">	<span class="keyword">var</span> numArray = [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;                 <span class="comment">//使用指定的初始值完成初始化</span></span><br><span class="line">	<span class="keyword">var</span> cityArray = [<span class="number">3</span>]<span class="keyword">string</span>&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125; <span class="comment">//使用指定的初始值完成初始化</span></span><br><span class="line">	fmt.Println(testArray)                      <span class="comment">//[0 0 0]</span></span><br><span class="line">	fmt.Println(numArray)                       <span class="comment">//[1 2 0]</span></span><br><span class="line">	fmt.Println(cityArray)                      <span class="comment">//[北京 上海 深圳]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>方法二</strong>：<br>按照上面的方法每次都要确保提供的初始值和数组长度一致，一般情况下我们可以让编译器根据初始值的个数自行推断数组的长度，例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> testArray [<span class="number">3</span>]<span class="keyword">int</span></span><br><span class="line">	<span class="keyword">var</span> numArray = [...]<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>&#125;</span><br><span class="line">	<span class="keyword">var</span> cityArray = [...]<span class="keyword">string</span>&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125;</span><br><span class="line">	fmt.Println(testArray)                          <span class="comment">//[0 0 0]</span></span><br><span class="line">	fmt.Println(numArray)                           <span class="comment">//[1 2]</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;type of numArray:%T\n&quot;</span>, numArray)   <span class="comment">//type of numArray:[2]int</span></span><br><span class="line">	fmt.Println(cityArray)                          <span class="comment">//[北京 上海 深圳]</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;type of cityArray:%T\n&quot;</span>, cityArray) <span class="comment">//type of cityArray:[3]string</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>方法三</strong>：<br>我们还可以使用指定索引值的方式来初始化数组，例如:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [...]<span class="keyword">int</span>&#123;<span class="number">1</span>: <span class="number">1</span>, <span class="number">3</span>: <span class="number">5</span>&#125;</span><br><span class="line">	fmt.Println(a)                  <span class="comment">// [0 1 0 5]</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;type of a:%T\n&quot;</span>, a) <span class="comment">//type of a:[4]int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>数组的遍历</strong><br>遍历数组a有以下两种方法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a = [...]<span class="keyword">string</span>&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125;</span><br><span class="line">	<span class="comment">// 方法1：for循环遍历</span></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(a); i++ &#123;</span><br><span class="line">		fmt.Println(a[i])</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 方法2：for range遍历</span></span><br><span class="line">	<span class="keyword">for</span> index, value := <span class="keyword">range</span> a &#123;</span><br><span class="line">		fmt.Println(index, value)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>多维数组</strong><br>Go语言是支持多维数组的，我们这里以二维数组为例（数组中又嵌套数组）。<br>二维数组的定义</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">3</span>][<span class="number">2</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;广州&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;成都&quot;</span>, <span class="string">&quot;重庆&quot;</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(a) <span class="comment">//[[北京 上海] [广州 深圳] [成都 重庆]]</span></span><br><span class="line">	fmt.Println(a[<span class="number">2</span>][<span class="number">1</span>]) <span class="comment">//支持索引取值:重庆</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>二维数组的遍历</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">3</span>][<span class="number">2</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;广州&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125;,</span><br><span class="line">		&#123;<span class="string">&quot;成都&quot;</span>, <span class="string">&quot;重庆&quot;</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> _, v1 := <span class="keyword">range</span> a &#123;</span><br><span class="line">		<span class="keyword">for</span> _, v2 := <span class="keyword">range</span> v1 &#123;</span><br><span class="line">			fmt.Printf(<span class="string">&quot;%s\t&quot;</span>, v2)</span><br><span class="line">		&#125;</span><br><span class="line">		fmt.Println()</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">输出：</span><br><span class="line"></span><br><span class="line">北京	上海	</span><br><span class="line">广州	深圳	</span><br><span class="line">成都	重庆	</span><br></pre></td></tr></table></figure>
+<p><code>注意：</code> 多维数组只有<code>第一层</code>可以使用<code>...</code>来让编译器推导数组长度。例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//支持的写法</span></span><br><span class="line">a := [...][<span class="number">2</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">	&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>&#125;,</span><br><span class="line">	&#123;<span class="string">&quot;广州&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125;,</span><br><span class="line">	&#123;<span class="string">&quot;成都&quot;</span>, <span class="string">&quot;重庆&quot;</span>&#125;,</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//不支持多维数组的内层使用...</span></span><br><span class="line">b := [<span class="number">3</span>][...]<span class="keyword">string</span>&#123;</span><br><span class="line">	&#123;<span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>&#125;,</span><br><span class="line">	&#123;<span class="string">&quot;广州&quot;</span>, <span class="string">&quot;深圳&quot;</span>&#125;,</span><br><span class="line">	&#123;<span class="string">&quot;成都&quot;</span>, <span class="string">&quot;重庆&quot;</span>&#125;,</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>数组是值类型</strong><br>数组是值类型，赋值和传参会复制整个数组。因此改变副本的值，不会改变本身的值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyArray</span><span class="params">(x [3]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	x[<span class="number">0</span>] = <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">modifyArray2</span><span class="params">(x [3][2]<span class="keyword">int</span>)</span></span> &#123;</span><br><span class="line">	x[<span class="number">2</span>][<span class="number">0</span>] = <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := [<span class="number">3</span>]<span class="keyword">int</span>&#123;<span class="number">10</span>, <span class="number">20</span>, <span class="number">30</span>&#125;</span><br><span class="line">	modifyArray(a) <span class="comment">//在modify中修改的是a的副本x</span></span><br><span class="line">	fmt.Println(a) <span class="comment">//[10 20 30]</span></span><br><span class="line">	b := [<span class="number">3</span>][<span class="number">2</span>]<span class="keyword">int</span>&#123;</span><br><span class="line">		&#123;<span class="number">1</span>, <span class="number">1</span>&#125;,</span><br><span class="line">		&#123;<span class="number">1</span>, <span class="number">1</span>&#125;,</span><br><span class="line">		&#123;<span class="number">1</span>, <span class="number">1</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	modifyArray2(b) <span class="comment">//在modify中修改的是b的副本x</span></span><br><span class="line">	fmt.Println(b)  <span class="comment">//[[1 1] [1 1] [1 1]]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>注意：</code></p>
+<ol>
+<li>数组支持 “==“、”!=” 操作符，因为内存总是被初始化过的。</li>
+<li>[n]<em>T表示指针数组，</em>[n]T表示数组指针 。</li>
+</ol>
 
-        </div>
-    	 
+    
 
-        <div class="article-info info-on-right">
+    
+    <div class="page-reward">
+      <a href="javascript:void(0);" class="page-reward-btn tooltip-top" target="_self">
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item">
+            赏
+          </span>
+          <span class="tooltip-content">
+            <span class="tooltip-text">
+              <span class="tooltip-inner">
+                <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i
+                    class="icon icon-quo-right"></i></p>
+                <div class="reward-box">
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/img/alipay.png">
+                    <span class="reward-type">支付宝</span>
+                  </div>
+                  
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/img/weixin.png">
+                    <span class="reward-type">微信</span>
+                  </div>
+                  
+                </div>
+              </span>
+            </span>
+          </span>
+        </div>
+      </a>
+    </div>
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          徐天一
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="http://tianyi0801.github.io/2020/10/26/Go语言学习-部分（5）数组/" title="" target="_blank">http://tianyi0801.github.io/2020/10/26/Go语言学习-部分（5）数组/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
           
-          
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
+    
 
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+    
+
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%885%EF%BC%89%E6%95%B0%E7%BB%84/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%884%EF%BC%89%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6+%E8%BF%90%E7%AE%97%E7%AC%A6/" class="archive-article-date">
-        <time datetime="2020-10-26T12:49:39.126Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
 
-        </div>
-    	 
 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%883%EF%BC%89%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B/" class="archive-article-date">
-        <time datetime="2020-10-26T10:49:49.131Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-26</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/25/%E5%85%B3%E4%BA%8Ejava%E5%A4%9A%E7%BA%BF%E7%A8%8B%E5%85%B3%E9%94%AE%E5%AD%97volatile%E7%9A%84%E7%90%86%E8%A7%A3/" class="archive-article-date">
-        <time datetime="2020-10-25T13:02:24.787Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-25</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/24/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%882%EF%BC%89%E5%8F%98%E9%87%8F%E5%B8%B8%E9%87%8F/" class="archive-article-date">
-        <time datetime="2020-10-24T13:44:55.769Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-24</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/23/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%881%EF%BC%89/" class="archive-article-date">
-        <time datetime="2020-10-23T14:42:58.515Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20go%20build%20%E5%92%8C%20go%20install/" class="archive-article-date">
-        <time datetime="2020-10-23T12:58:03.875Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/23/Go%E5%9F%BA%E4%BA%8Eidea%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE/" class="archive-article-date">
-        <time datetime="2020-10-23T10:40:51.318Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/23/java%E4%B8%AD%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%86%85%E5%AE%B9/" class="archive-article-date">
-        <time datetime="2020-10-23T07:51:26.661Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-23</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/22/%E6%95%B4%E7%90%86%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" class="archive-article-date">
-        <time datetime="2020-10-22T11:25:50.889Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
-
-        </div>
-    	 
-
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%884%EF%BC%89%E6%B5%81%E7%A8%8B%E6%8E%A7%E5%88%B6+%E8%BF%90%E7%AE%97%E7%AC%A6/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
   
+</nav>
 
-    
-    <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/archives/2020/10/page/2/">2</a><a class="extend next" rel="next" href="/archives/2020/10/page/2/">Next &amp;raquo;</a>
-    </nav>
-  
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
           </div>
@@ -507,8 +448,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
