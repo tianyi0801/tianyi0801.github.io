@@ -214,6 +214,578 @@
             
 
   
+    <article id="post-Go语言学习-部分（7）函数 闭包" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+  <div class="article-entry" itemprop="articleBody">
+    
+    <!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Go语言学习-部分（7）函数 闭包</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__html"><h2><a id="Go7__0"></a>Go语言学习-部分（7）函数 闭包</h2>
+<p><code>如果什么都很容易，那还叫什么选择 走上坡路一定是会累的</code></p>
+<h3><a id="_4"></a>函数定义</h3>
+<blockquote>
+<p>func 函数名(参数)(返回值){<br>
+函数体<br>
+}</p>
+</blockquote>
+<p>其中：</p>
+<ul>
+<li>函数名：由字母、数字、下划线组成。但函数名的第一个字母不能是数字。在同一个包内，函数名也称不能重名（包的概念详见后文）。</li>
+<li>参数：参数由参数变量和参数变量的类型组成，多个参数之间使用,分隔。</li>
+<li>返回值：返回值由返回值变量和其变量类型组成，也可以只写返回值的类型，多个返回值必须用()包裹，并用,分隔。</li>
+<li>函数体：实现指定功能的代码块。</li>
+</ul>
+<p>我们先来定义一个求两个数之和的函数：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> x <span class="token operator">+</span> y
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>函数的参数和返回值都是可选的，例如我们可以实现一个既不需要参数也没有返回值的函数：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Hello 沙河"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>函数的调用</strong><br>
+定义了函数之后，我们可以通过函数名()的方式调用函数。 例如我们调用上面定义的两个函数，代码如下：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	ret <span class="token operator">:=</span> <span class="token function">intSum</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>注意，调用有返回值的函数时，可以不接收其返回值。<br>
+<strong>参数</strong><br>
+类型简写:<br>
+函数的参数中如果相邻变量的类型相同，则可以省略类型，例如：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> x <span class="token operator">+</span> y
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>上面的代码中，intSum函数有两个参数，这两个参数的类型均为int，因此可以省略x的类型，因为y后面有类型说明，x参数也是该类型。</p>
+<p><strong>可变参数</strong><br>
+可变参数是指函数的参数<code>数量</code>不固定。Go语言中的可变参数通过在参数名后加<code>...</code>来标识。</p>
+<p>注意：可变参数通常要作为函数的最后一个参数。</p>
+<p>举个例子：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum2</span><span class="token punctuation">(</span>x <span class="token operator">...</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token comment">//x是一个切片</span>
+	sum <span class="token operator">:=</span> <span class="token number">0</span>
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> x <span class="token punctuation">&#123;</span>
+		sum <span class="token operator">=</span> sum <span class="token operator">+</span> v
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> sum
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>调用上面的函数：</p>
+<pre><code class="prism language-go">ret1 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+ret2 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+ret3 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+ret4 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret1<span class="token punctuation">,</span> ret2<span class="token punctuation">,</span> ret3<span class="token punctuation">,</span> ret4<span class="token punctuation">)</span> <span class="token comment">//0 10 30 60</span>
+</code></pre>
+<p>固定参数搭配可变参数使用时，可变参数要放在固定参数的后面，示例代码如下：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum3</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">,</span> y <span class="token operator">...</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+	sum <span class="token operator">:=</span> x
+	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> y <span class="token punctuation">&#123;</span>
+		sum <span class="token operator">=</span> sum <span class="token operator">+</span> v
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> sum
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>调用上述函数：</p>
+<pre><code class="prism language-go">ret5 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
+ret6 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+ret7 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+ret8 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
+fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret5<span class="token punctuation">,</span> ret6<span class="token punctuation">,</span> ret7<span class="token punctuation">,</span> ret8<span class="token punctuation">)</span> <span class="token comment">//100 110 130 160</span>
+</code></pre>
+<p>本质上，函数的可变参数是通过切片来实现的。</p>
+<h3><a id="_93"></a>返回值</h3>
+<p><strong>多返回值</strong><br>
+Go语言中函数支持多返回值，函数如果有多个返回值时必须用()将所有返回值包裹起来。</p>
+<p>举个例子：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	sum <span class="token operator">:=</span> x <span class="token operator">+</span> y
+	sub <span class="token operator">:=</span> x <span class="token operator">-</span> y
+	<span class="token keyword">return</span> sum<span class="token punctuation">,</span> sub
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>返回值命名</strong><br>
+函数定义时可以给返回值命名，并在函数体中直接使用这些变量，最后通过return关键字返回。</p>
+<p>例如：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>sum<span class="token punctuation">,</span> sub <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	sum <span class="token operator">=</span> x <span class="token operator">+</span> y
+	sub <span class="token operator">=</span> x <span class="token operator">-</span> y
+	<span class="token keyword">return</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>返回值补充</strong><br>
+当我们的一个函数返回值类型为slice时，nil可以看做是一个有效的slice，没必要显示返回一个长度为0的切片。</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">someFunc</span><span class="token punctuation">(</span>x <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span> x <span class="token operator">==</span> <span class="token string">""</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token boolean">nil</span> <span class="token comment">// 没必要返回[]int&#123;&#125;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token operator">...</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<h3><a id="_126"></a>函数进阶</h3>
+<p><strong>变量作用域</strong><br>
+<strong>全局变量</strong><br>
+全局变量是定义在函数外部的变量，它在程序整个运行周期内都有效。 在函数中可以访问到全局变量。</p>
+<pre><code class="prism language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token string">"fmt"</span>
+
+<span class="token comment">//定义全局变量num</span>
+<span class="token keyword">var</span> num <span class="token builtin">int64</span> <span class="token operator">=</span> <span class="token number">10</span>
+
+<span class="token keyword">func</span> <span class="token function">testGlobalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"num=%d\n"</span><span class="token punctuation">,</span> num<span class="token punctuation">)</span> <span class="token comment">//函数中可以访问全局变量num</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">testGlobalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//num=10</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>局部变量</strong><br>
+局部变量又分为两种： 函数内定义的变量无法在该函数外使用，例如下面的示例代码main函数中无法使用testLocalVar函数中定义的变量x：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">testLocalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token comment">//定义一个函数局部变量x,仅在该函数内生效</span>
+	<span class="token keyword">var</span> x <span class="token builtin">int64</span> <span class="token operator">=</span> <span class="token number">100</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"x=%d\n"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">testLocalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token comment">// 此时无法使用变量x</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>如果局部变量和全局变量重名，优先访问局部变量。</p>
+<pre><code class="prism language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token string">"fmt"</span>
+
+<span class="token comment">//定义全局变量num</span>
+<span class="token keyword">var</span> num <span class="token builtin">int64</span> <span class="token operator">=</span> <span class="token number">10</span>
+
+<span class="token keyword">func</span> <span class="token function">testNum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	num <span class="token operator">:=</span> <span class="token number">100</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"num=%d\n"</span><span class="token punctuation">,</span> num<span class="token punctuation">)</span> <span class="token comment">// 函数中优先使用局部变量</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">testNum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// num=100</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>接下来我们来看一下语句块定义的变量，通常我们会在if条件判断、for循环、switch语句上使用这种定义变量的方式。</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">testLocalVar2</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token comment">//函数的参数也是只在本函数中生效</span>
+	<span class="token keyword">if</span> x <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
+		z <span class="token operator">:=</span> <span class="token number">100</span> <span class="token comment">//变量z只在if语句块生效</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>z<span class="token punctuation">)</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token comment">//fmt.Println(z)//此处无法使用变量z</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>还有我们之前讲过的for循环语句中定义的变量，也是只在for语句块中生效：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">testLocalVar3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">&#123;</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token comment">//变量i只在当前for语句块中生效</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token comment">//fmt.Println(i) //此处无法使用变量i</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>函数类型与变量</strong><br>
+<strong>定义函数类型</strong><br>
+我们可以使用type关键字来定义一个函数类型，具体格式如下：</p>
+<blockquote>
+<p>type calculation func(int, int) int</p>
+</blockquote>
+<p>上面语句定义了一个calculation类型，它是一种函数类型，这种函数接收两个int类型的参数并且返回一个int类型的返回值。</p>
+<p>简单来说，凡是满足这个条件的函数都是calculation类型的函数，例如下面的add和sub是calculation类型。</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> x <span class="token operator">+</span> y
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">sub</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> x <span class="token operator">-</span> y
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>add和sub都能赋值给calculation类型的变量。</p>
+<pre><code class="prism language-go"><span class="token keyword">var</span> c calculation
+c <span class="token operator">=</span> add
+</code></pre>
+<p>函数类型变量<br>
+我们可以声明函数类型的变量并且为该变量赋值：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">var</span> c calculation               <span class="token comment">// 声明一个calculation类型的变量c</span>
+	c <span class="token operator">=</span> add                         <span class="token comment">// 把add赋值给c</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"type of c:%T\n"</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span> <span class="token comment">// type of c:main.calculation</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">c</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>            <span class="token comment">// 像调用add一样调用c</span>
+
+	f <span class="token operator">:=</span> add                        <span class="token comment">// 将函数add赋值给变量f1</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"type of f:%T\n"</span><span class="token punctuation">,</span> f<span class="token punctuation">)</span> <span class="token comment">// type of f:func(int, int) int</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span>          <span class="token comment">// 像调用add一样调用f</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><code>注：</code>这里函数可以赋值给相同类型的变量，同时这个变量就相当于这个函数使用</p>
+<h3><a id="_234"></a>高阶函数</h3>
+<p>高阶函数分为函数作为参数和函数作为返回值两部分。</p>
+<p><strong>函数作为参数</strong><br>
+函数可以作为参数：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> x <span class="token operator">+</span> y
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">,</span> op <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+<span class="token comment">//这里函数作为参数名称为op 类型为func（int，int）int</span>
+<span class="token comment">//最后整体的返回值是int</span>
+	<span class="token keyword">return</span> <span class="token function">op</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	ret2 <span class="token operator">:=</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> add<span class="token punctuation">)</span><span class="token comment">//</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret2<span class="token punctuation">)</span> <span class="token comment">//30</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>函数作为返回值</strong><br>
+函数也可以作为返回值：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">do</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">switch</span> s <span class="token punctuation">&#123;</span>
+	<span class="token keyword">case</span> <span class="token string">"+"</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> add<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+	<span class="token keyword">case</span> <span class="token string">"-"</span><span class="token punctuation">:</span>
+		<span class="token keyword">return</span> sub<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+	<span class="token keyword">default</span><span class="token punctuation">:</span>
+		err <span class="token operator">:=</span> errors<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token string">"无法识别的操作符"</span><span class="token punctuation">)</span>
+		<span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> err
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<h3><a id="defer_269"></a>defer语句</h3>
+<p>Go语言中的defer语句会将其后面跟随的语句进行延迟处理。在defer归属的函数即将返回时，将延迟处理的语句按defer定义的逆序进行执行，也就是说，先被defer的语句最后被执行，最后被defer的语句，最先被执行。</p>
+<p>举个例子：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"start"</span><span class="token punctuation">)</span>
+	<span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+	<span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+	<span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"end"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>输出结果：</p>
+<pre><code class="prism language-go">start
+end
+<span class="token number">3</span>
+<span class="token number">2</span>
+<span class="token number">1</span>
+</code></pre>
+<p>由于defer语句延迟调用的特性，所以defer语句能非常方便的处理资源释放问题。比如：资源清理、文件关闭、解锁及记录时间等。</p>
+<p><strong>defer执行的时机</strong><br>
+在Go语言的函数中return语句在底层并不是原子操作，它分为给返回值赋值和RET指令两步。而defer语句执行的时机就在返回值赋值操作后，RET指令执行前。具体如下图所示：<br>
+<img src="https://img-blog.csdnimg.cn/20201029203254794.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>
+<strong>defer经典案例</strong><br>
+阅读下面的代码，写出最后的打印结果。</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">f1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	x <span class="token operator">:=</span> <span class="token number">5</span>
+	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		x<span class="token operator">++</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> x
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		x<span class="token operator">++</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token number">5</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">f3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	x <span class="token operator">:=</span> <span class="token number">5</span>
+	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		x<span class="token operator">++</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token keyword">return</span> x
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">f4</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		x<span class="token operator">++</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+	<span class="token keyword">return</span> <span class="token number">5</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f4</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p><strong>defer面试题</strong></p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>index <span class="token builtin">string</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> b <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	ret <span class="token operator">:=</span> a <span class="token operator">+</span> b
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> ret<span class="token punctuation">)</span>
+	<span class="token keyword">return</span> ret
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	x <span class="token operator">:=</span> <span class="token number">1</span>
+	y <span class="token operator">:=</span> <span class="token number">2</span>
+	<span class="token keyword">defer</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"AA"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	x <span class="token operator">=</span> <span class="token number">10</span>
+	<span class="token keyword">defer</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"BB"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	y <span class="token operator">=</span> <span class="token number">20</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>问，上面代码的输出结果是？（提示：defer注册要延迟执行的函数时该函数所有的参数都需要确定其值）</p>
+<h3><a id="_352"></a>内置函数介绍</h3>
+
+<table>
+<thead>
+<tr>
+<th>内置函数</th>
+<th>介绍</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>close</td>
+<td>主要用来关闭channel</td>
+</tr>
+<tr>
+<td>len</td>
+<td>用来求长度，比如string、array、slice、map、channel</td>
+</tr>
+<tr>
+<td>new</td>
+<td>用来分配内存，主要用来分配值类型，比如int、struct。返回的是指针</td>
+</tr>
+<tr>
+<td>make</td>
+<td>用来分配内存，主要用来分配引用类型，比如chan、map、slice</td>
+</tr>
+<tr>
+<td>append</td>
+<td>用来追加元素到数组、slice中</td>
+</tr>
+<tr>
+<td>panic和recover</td>
+<td>用来做错误处理</td>
+</tr>
+</tbody>
+</table><p><strong>panic/recover</strong>:<br>
+Go语言中目前（Go1.12）是没有异常机制，但是使用panic/recover模式来处理错误。 panic可以在任何地方引发，但recover只有在defer调用的函数中有效。 首先来看一个例子：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func A"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"panic in B"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func C"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>输出：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> A
+<span class="token builtin">panic</span><span class="token punctuation">:</span> <span class="token builtin">panic</span> in B
+
+goroutine <span class="token number">1</span> <span class="token punctuation">[</span>running<span class="token punctuation">]</span><span class="token punctuation">:</span>
+main<span class="token punctuation">.</span><span class="token function">funcB</span><span class="token punctuation">(</span><span class="token operator">...</span><span class="token punctuation">)</span>
+        <span class="token operator">...</span><span class="token operator">/</span>code<span class="token operator">/</span><span class="token keyword">func</span><span class="token operator">/</span>main<span class="token punctuation">.</span><span class="token keyword">go</span><span class="token punctuation">:</span><span class="token number">12</span>
+main<span class="token punctuation">.</span><span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token operator">...</span><span class="token operator">/</span>code<span class="token operator">/</span><span class="token keyword">func</span><span class="token operator">/</span>main<span class="token punctuation">.</span><span class="token keyword">go</span><span class="token punctuation">:</span><span class="token number">20</span> <span class="token operator">+</span><span class="token number">0x98</span>
+</code></pre>
+<p>程序运行期间funcB中引发了panic导致程序崩溃，异常退出了。这个时候我们就可以通过recover将程序恢复回来，继续往后执行。</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func A"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		err <span class="token operator">:=</span> <span class="token function">recover</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+		<span class="token comment">//如果程序出出现了panic错误,可以通过recover恢复过来</span>
+		<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
+			fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"recover in B"</span><span class="token punctuation">)</span>
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"panic in B"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func C"</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	<span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>注意：</p>
+<ul>
+<li>recover()必须搭配defer使用。</li>
+<li>defer一定要在可能引发panic的语句之前定义。</li>
+</ul>
+<h3><a id="_423"></a>匿名函数和闭包</h3>
+<p><strong>匿名函数</strong><br>
+函数当然还可以作为返回值，但是在Go语言中函数内部不能再像之前那样定义函数了，只能定义匿名函数。匿名函数就是没有函数名的函数，匿名函数的定义格式如下：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span><span class="token punctuation">(</span>参数<span class="token punctuation">)</span><span class="token punctuation">(</span>返回值<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
+    函数体
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>匿名函数因为没有函数名，所以没办法像普通函数那样调用，所以匿名函数需要保存到某个变量或者作为立即执行函数:</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token comment">// 将匿名函数保存到变量</span>
+	add <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x <span class="token operator">+</span> y<span class="token punctuation">)</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment">// 通过变量调用匿名函数</span>
+
+	<span class="token comment">//自执行函数：匿名函数定义完加()直接执行</span>
+	<span class="token keyword">func</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x <span class="token operator">+</span> y<span class="token punctuation">)</span>
+	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>匿名函数多用于实现回调函数和闭包。</p>
+<p><strong>闭包</strong><br>
+闭包指的是一个函数和与其相关的引用环境组合而成的实体。简单来说，闭包=函数+引用环境。 首先我们来看一个例子：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">var</span> x <span class="token builtin">int</span>
+	<span class="token keyword">return</span> <span class="token keyword">func</span><span class="token punctuation">(</span>y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+		x <span class="token operator">+=</span> y
+		<span class="token keyword">return</span> x
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">var</span> f <span class="token operator">=</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//10</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//30</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//60</span>
+
+	f1 <span class="token operator">:=</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//40</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//90</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>变量f是一个函数并且它引用了其外部作用域中的x变量，此时f就是一个闭包。 在f的生命周期内，变量x也一直有效。 闭包进阶示例1：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">adder2</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token keyword">func</span><span class="token punctuation">(</span>y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+		x <span class="token operator">+=</span> y
+		<span class="token keyword">return</span> x
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">var</span> f <span class="token operator">=</span> <span class="token function">adder2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//20</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//40</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//70</span>
+
+	f1 <span class="token operator">:=</span> <span class="token function">adder2</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//60</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//110</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>闭包进阶示例2：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">makeSuffixFunc</span><span class="token punctuation">(</span>suffix <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token keyword">func</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span> <span class="token operator">!</span>strings<span class="token punctuation">.</span><span class="token function">HasSuffix</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> suffix<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+			<span class="token keyword">return</span> name <span class="token operator">+</span> suffix
+		<span class="token punctuation">&#125;</span>
+		<span class="token keyword">return</span> name
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	jpgFunc <span class="token operator">:=</span> <span class="token function">makeSuffixFunc</span><span class="token punctuation">(</span><span class="token string">".jpg"</span><span class="token punctuation">)</span>
+	txtFunc <span class="token operator">:=</span> <span class="token function">makeSuffixFunc</span><span class="token punctuation">(</span><span class="token string">".txt"</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">jpgFunc</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//test.jpg</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">txtFunc</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//test.txt</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>闭包进阶示例3：</p>
+<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>base <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	add <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+		base <span class="token operator">+=</span> i
+		<span class="token keyword">return</span> base
+	<span class="token punctuation">&#125;</span>
+
+	sub <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
+		base <span class="token operator">-=</span> i
+		<span class="token keyword">return</span> base
+	<span class="token punctuation">&#125;</span>
+	<span class="token keyword">return</span> add<span class="token punctuation">,</span> sub
+<span class="token punctuation">&#125;</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	f1<span class="token punctuation">,</span> f2 <span class="token operator">:=</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//11 9</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//12 8</span>
+	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//13 7</span>
+<span class="token punctuation">&#125;</span>
+</code></pre>
+<p>闭包其实并不复杂，只要牢记闭包=函数+引用环境。</p>
+</div>
+</body>
+
+</html>
+
+    
+
+    
+
+    
+
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+    
+
+    
+    <p class="article-more-link">
+      <a class="article-more-a" href="/2020/10/29/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%887%EF%BC%89%E5%87%BD%E6%95%B0%20%E9%97%AD%E5%8C%85/">展开全文 >></a>
+    </p>
+    
+
+    
+    <div class="clearfix"></div>
+  </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Go语言学习-部分（6） 切片 map" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -695,67 +1267,6 @@
     
     <p class="article-more-link">
       <a class="article-more-a" href="/2020/10/23/Go%E5%9F%BA%E4%BA%8Eidea%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE/">展开全文 >></a>
-    </p>
-    
-
-    
-    <div class="clearfix"></div>
-  </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-java中成员变量内容" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-  <div class="article-entry" itemprop="articleBody">
-    
-    <p>java中成员变量内容</p>
-<h2 id="成员变量与全局变量"><a href="#成员变量与全局变量" class="headerlink" title="成员变量与全局变量"></a>成员变量与全局变量</h2><p><strong>这个概念我在学习之初也有些迷惑，专门整理过这一份文档，希望对你有用。</strong></p>
-<p><strong>java中就没有全局变量这个概念，只分为成员变量和局部变量。</strong></p>
-<ul>
-<li><p>成员变量：Static修饰成为类变量或静态变量，还有就是方法外的变量。生命周期与类相同。</p>
-</li>
-<li><p>局部变量：就是方法中的变量。生命周期就是再次方法中。<br>但是，很多人学习都是先学习的C语言，C语言中存在全局变量这个概念，所以，大家对于Java中的成员变量有时候也称之为全局变量，同时也存在如下的一个约定俗成的小区别</p>
-</li>
-</ul>
-    
-    <a class="article-more-a" href="/2020/10/23/java%E4%B8%AD%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%86%85%E5%AE%B9/#more">more >></a>
-    
-    
-
-    
-
-    
-
-  </div>
-  <div class="article-info article-info-index">
-    
-    
-    
-
-    
-    <p class="article-more-link">
-      <a class="article-more-a" href="/2020/10/23/java%E4%B8%AD%E6%88%90%E5%91%98%E5%8F%98%E9%87%8F%E5%86%85%E5%AE%B9/">展开全文 >></a>
     </p>
     
 
