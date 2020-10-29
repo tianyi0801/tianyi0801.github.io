@@ -6,17 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://tianyi0801.github.io">
-  <title>Archives: 2020 | Hexo</title>
+  <title>Hexo</title>
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta property="og:type" content="website">
+  <meta name="description" content="Go语言学习-部分(6) 切片 map切片(Slice):引言:  之前学习的数组限制性很多,首先长度也是数组类型的一部分,这样使得定义出来的数组只能接收固定长度的数组 另外如果定义了一个数组 var s &#x3D; [3]&amp;#123;1,2,3&amp;#125;这样数组s已经有三个值了,没有办法在向里面添加值.">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://tianyi0801.github.io/archives/2020/page/2/index.html">
+<meta property="og:url" content="http://tianyi0801.github.io/2020/10/28/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%886%EF%BC%89%20%E5%88%87%E7%89%87%20map/index.html">
 <meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="Go语言学习-部分(6) 切片 map切片(Slice):引言:  之前学习的数组限制性很多,首先长度也是数组类型的一部分,这样使得定义出来的数组只能接收固定长度的数组 另外如果定义了一个数组 var s &#x3D; [3]&amp;#123;1,2,3&amp;#125;这样数组s已经有三个值了,没有办法在向里面添加值.">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201027154512622.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20201027154528386.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-10-28T00:43:31.055Z">
+<meta property="article:modified_time" content="2020-10-29T13:01:29.023Z">
 <meta property="article:author" content="徐天一">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201027154512622.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -207,74 +214,288 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Go语言学习-部分（6） 切片 map" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+  <div class="article-entry" itemprop="articleBody">
     
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/22/%E6%95%B4%E7%90%86%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/" class="archive-article-date">
-        <time datetime="2020-10-22T11:25:50.889Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
+    <h2 id="Go语言学习-部分-6-切片-map"><a href="#Go语言学习-部分-6-切片-map" class="headerlink" title="Go语言学习-部分(6) 切片 map"></a>Go语言学习-部分(6) 切片 map</h2><p><strong>切片(Slice)</strong>:<br><strong>引言:</strong></p>
+<ul>
+<li>之前学习的数组限制性很多,首先长度也是数组类型的一部分,这样使得定义出来的数组只能接收固定长度的数组</li>
+<li>另外如果定义了一个数组<code> var s = [3]&#123;1,2,3&#125;</code>这样数组s已经有三个值了,没有办法在向里面添加值.</li>
+</ul>
+<a id="more"></a>
 
-        </div>
-    	 
+<h4 id="切片"><a href="#切片" class="headerlink" title="切片:"></a>切片:</h4><p>切片（Slice）是一个拥有<code>相同类型元素的可变长度的序列</code>。它是基于<code>数组</code>类型做的一层封装。它非常灵活，支持<code>自动扩容</code>。<br>(简单的,我们就可以把它理解成数组切割一部分变成的,方便记忆)</p>
+<p>切片是一个<code>引用类型</code>，它的内部结构包含地址、长度和容量。切片一般用于快速地操作一块数据集合。<br><strong>声明切片类型的基本语法如下：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []T</span><br></pre></td></tr></table></figure>
 
-        <div class="article-info info-on-right">
+<p><strong>其中</strong></p>
+<ul>
+<li>name:表示变量名</li>
+<li>T:表示切片中的元素类型<br><code>注</code>:用法基本和数组类似,但是[]里面没有东西.</li>
+</ul>
+<p><strong>初始化</strong>:与数组类似</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = []<span class="keyword">int</span>&#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>&#125;</span><br><span class="line"><span class="keyword">var</span> b = []<span class="keyword">string</span>&#123;<span class="string">&quot;大大&quot;</span>,<span class="string">&quot;小小&quot;</span>,<span class="string">&quot;钱钱&quot;</span>&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>切片的长度和容量</strong><br>切片拥有自己的长度和容量，我们可以通过使用内置的<code>len()</code>函数求长度，使用内置的<code>cap()</code>函数求切片的容量。<br><strong>由数组得到切片</strong>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a = [...]<span class="keyword">int</span> &#123;<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>&#125;<span class="comment">//定义一个数组</span></span><br><span class="line">s := a[<span class="number">0</span>:<span class="number">4</span>]<span class="comment">//通过数组切割,左包含右不包含1,2,3,4</span></span><br><span class="line">fmt.Println(s)</span><br><span class="line"></span><br><span class="line">还可以这样截:</span><br><span class="line">a[<span class="number">1</span>:]<span class="comment">//从前面索引截到最后</span></span><br><span class="line">a[:<span class="number">4</span>]<span class="comment">//从后面这个索引截到前面</span></span><br><span class="line">a[:]<span class="comment">//截取所有</span></span><br></pre></td></tr></table></figure>
+<p><strong>切片再切片</strong></p>
+<ul>
+<li>切片的长度就是元素的个数</li>
+<li>而切片的容量是他底层数组的容量,准确的说是从切片地第一个索引到底层数组的最后一个索引.</li>
+</ul>
+<p><img src="https://img-blog.csdnimg.cn/20201027154512622.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20201027154528386.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<p><strong>make函数创建切片</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">s1 := <span class="built_in">make</span>([]<span class="keyword">int</span>,<span class="number">5</span>,<span class="number">10</span>) <span class="comment">//make(类型,长度,容量(不写默认和长度一致))</span></span><br><span class="line"><span class="comment">//此时内容全是0,没有初始化(赋值)默认都是0</span></span><br></pre></td></tr></table></figure>
+
+
+<p><strong>切片的本质:</strong></p>
+<ul>
+<li>切片就是一个框,框住了一块连续的内存</li>
+<li>切片属于引用类型,真正的数据都是保存在底层数组里</li>
+</ul>
+<p>如果切片是nil的那么它长度和容量一定是0;<br>但如果她的长度和容量是0,切片并不一定是nil;</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s1 []<span class="keyword">int</span>         <span class="comment">//len(s1)=0;cap(s1)=0;s1==nil</span></span><br><span class="line">s2 := []<span class="keyword">int</span>&#123;&#125;        <span class="comment">//len(s2)=0;cap(s2)=0;s2!=nil</span></span><br><span class="line">s3 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">0</span>) <span class="comment">//len(s3)=0;cap(s3)=0;s3!=nil</span></span><br></pre></td></tr></table></figure>
+<p>判断切片是否为空的需要用len()判断,而不能s==nil<br><strong>切片的赋值拷贝</strong>:<br>下面的代码中演示了拷贝前后两个变量共享底层数组，对一个切片的修改会影响另一个切片的内容，这点需要特别注意。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s1 := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">3</span>) <span class="comment">//[0 0 0]</span></span><br><span class="line">	s2 := s1             <span class="comment">//将s1直接赋值给s2，s1和s2共用一个底层数组</span></span><br><span class="line">	s2[<span class="number">0</span>] = <span class="number">100</span></span><br><span class="line">	fmt.Println(s1) <span class="comment">//[100 0 0]</span></span><br><span class="line">	fmt.Println(s2) <span class="comment">//[100 0 0]</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p><strong>切片遍历</strong></p>
+<ul>
+<li>索引的方式</li>
+<li>for range</li>
+</ul>
+<p><strong>append()方法为切片添加元素</strong>:<br>Go语言的内建函数append()可以为切片动态添加元素。 可以一次添加一个元素，可以添加多个元素，也可以添加另一个切片中的元素（后面加<code>…</code>）。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	<span class="keyword">var</span> s []<span class="keyword">int</span></span><br><span class="line">	s = <span class="built_in">append</span>(s, <span class="number">1</span>)        <span class="comment">// [1]</span></span><br><span class="line">	s = <span class="built_in">append</span>(s, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>)  <span class="comment">// [1 2 3 4]</span></span><br><span class="line">	s2 := []<span class="keyword">int</span>&#123;<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>&#125;  </span><br><span class="line">	s = <span class="built_in">append</span>(s, s2...)    <span class="comment">// [1 2 3 4 5 6 7]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>举例错误写法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s = []<span class="keyword">string</span>&#123;<span class="string">&quot;大&quot;</span>,<span class="string">&quot;小&quot;</span>,<span class="string">&quot;多&quot;</span>&#125;</span><br><span class="line"><span class="built_in">append</span>(s,<span class="string">&quot;少&quot;</span>)<span class="comment">//错误写法，会导致切片索引越界</span></span><br></pre></td></tr></table></figure>
+<p>调用append函数必须用原来的切片变量接收返回值<br><code>原因：</code>举个例子，搜狐公司开始两个人，公司只有两个位置，后来又来一个员工，位置不够了，那么公司搬家，搬到更大的地方去，这个公司还是这个公司。<br>append函数同理，在原来底层数组放不下的时候，Go就会把原来的底层数组（公司地址）换一个</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">s = <span class="built_in">append</span>(s,<span class="string">&quot;少&quot;</span>)</span><br></pre></td></tr></table></figure>
+<p>在使用append时候，这个切片没有必要先初始化，可以直接用。<br><code>注意</code>：通过var声明的零值切片可以在append()函数直接使用，无需初始化。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> s []<span class="keyword">int</span></span><br><span class="line">s = <span class="built_in">append</span>(s, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p>没有必要像下面的代码一样初始化一个切片再传入append()函数使用</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">s := []<span class="keyword">int</span>&#123;&#125;  <span class="comment">// 没有必要初始化</span></span><br><span class="line">s = <span class="built_in">append</span>(s, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> s = <span class="built_in">make</span>([]<span class="keyword">int</span>)  <span class="comment">// 没有必要初始化</span></span><br><span class="line">s = <span class="built_in">append</span>(s, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+<p><strong>使用copy()函数复制切片</strong><br>首先我们来看一个问题：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">	b := a</span><br><span class="line">	fmt.Println(a) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	fmt.Println(b) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	b[<span class="number">0</span>] = <span class="number">1000</span></span><br><span class="line">	fmt.Println(a) <span class="comment">//[1000 2 3 4 5]</span></span><br><span class="line">	fmt.Println(b) <span class="comment">//[1000 2 3 4 5]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于切片是引用类型，所以a和b其实都指向了同一块内存地址。修改b的同时a的值也会发生变化。</p>
+<p>Go语言内建的copy()函数可以迅速地将一个切片的数据复制到另外一个切片空间中，copy()函数的使用格式如下：</p>
+<blockquote>
+<p>copy(destSlice, srcSlice []T)</p>
+</blockquote>
+<p><strong>其中：</strong></p>
+<ul>
+<li>srcSlice: 数据来源切片</li>
+<li>destSlice: 目标切片</li>
+</ul>
+<p><strong>举个例子：</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// copy()复制切片</span></span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>&#125;</span><br><span class="line">	c := <span class="built_in">make</span>([]<span class="keyword">int</span>, <span class="number">5</span>, <span class="number">5</span>)</span><br><span class="line">	<span class="built_in">copy</span>(c, a)     <span class="comment">//使用copy()函数将切片a中的元素复制到切片c</span></span><br><span class="line">	fmt.Println(a) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	fmt.Println(c) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	c[<span class="number">0</span>] = <span class="number">1000</span></span><br><span class="line">	fmt.Println(a) <span class="comment">//[1 2 3 4 5]</span></span><br><span class="line">	fmt.Println(c) <span class="comment">//[1000 2 3 4 5]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>从切片中删除元素</strong><br>Go语言中并没有删除切片元素的专用方法，我们可以使用切片本身的特性来删除元素。 代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="comment">// 从切片中删除元素</span></span><br><span class="line">	a := []<span class="keyword">int</span>&#123;<span class="number">30</span>, <span class="number">31</span>, <span class="number">32</span>, <span class="number">33</span>, <span class="number">34</span>, <span class="number">35</span>, <span class="number">36</span>, <span class="number">37</span>&#125;</span><br><span class="line">	<span class="comment">// 要删除索引为2的元素</span></span><br><span class="line">	a = <span class="built_in">append</span>(a[:<span class="number">2</span>], a[<span class="number">3</span>:]...)</span><br><span class="line">	fmt.Println(a) <span class="comment">//[30 31 33 34 35 36 37]</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>总结一下就是</code>：要从切片a中删除索引为index的元素，操作方法是<code>a = append(a[:index], a[index+1:]...)</code></p>
+<p><strong>指针：</strong></p>
+<ul>
+<li>&amp;取地址</li>
+<li>*根据地址取值</li>
+</ul>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//取地址</span></span><br><span class="line">a := <span class="number">12</span></span><br><span class="line">p := &amp;a</span><br><span class="line">fmt.Printf(p)</span><br><span class="line"><span class="comment">//是一个16进制的内存地址</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>,p)<span class="comment">//*int代表int型指针</span></span><br><span class="line"><span class="comment">//根据地址p 取值</span></span><br><span class="line">m := *p</span><br><span class="line">fmt.Printf(m)<span class="comment">//输出12</span></span><br></pre></td></tr></table></figure>
+<p>New函数：<br>用来申请一块内存地址</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//错误示范：</span></span><br><span class="line"><span class="keyword">var</span> a = *<span class="keyword">int</span><span class="comment">//这里虽然定义的是一个int型指针，但是却是nil指针</span></span><br><span class="line"><span class="comment">//所以我们需要用到new函数</span></span><br><span class="line"><span class="keyword">var</span> a = <span class="built_in">new</span>(<span class="keyword">int</span>)<span class="comment">//这时a才是一个真正的不是空的内存地址</span></span><br><span class="line">*a = <span class="number">100</span></span><br><span class="line">fmt.Printf(*a)</span><br></pre></td></tr></table></figure>
+<p><strong>make和new的区别：</strong></p>
+<ol>
+<li>make和new都是用来申请内存的</li>
+<li>new很少用，一般用来给基本数据类型申请内存的：string、int，返回的是对应类型的指针</li>
+<li>make是用来给<code>slice</code>,<code>map</code>,<code>chan</code>申请内存的，返回的是对应三个类型的本身。</li>
+</ol>
+<h3 id="map"><a href="#map" class="headerlink" title="map"></a>map</h3><p>定义：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> a <span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>  <span class="comment">//定义了一个map集合 key是int型 value是string型</span></span><br><span class="line"><span class="comment">//初始化</span></span><br><span class="line">a = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">int</span>]<span class="keyword">string</span>,<span class="number">10</span>) <span class="comment">//这里10是容量，键值对个数，估算好容量避免不够在要</span></span><br><span class="line">a[<span class="number">3</span>] = <span class="string">&quot;大大&quot;</span></span><br></pre></td></tr></table></figure>
+<p><strong>map基本使用：</strong><br>map中的数据都是成对出现的，map的基本使用示例代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	scoreMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>, <span class="number">8</span>)</span><br><span class="line">	scoreMap[<span class="string">&quot;张三&quot;</span>] = <span class="number">90</span></span><br><span class="line">	scoreMap[<span class="string">&quot;小明&quot;</span>] = <span class="number">100</span></span><br><span class="line">	fmt.Println(scoreMap)</span><br><span class="line">	fmt.Println(scoreMap[<span class="string">&quot;小明&quot;</span>])</span><br><span class="line">	fmt.Printf(<span class="string">&quot;type of a:%T\n&quot;</span>, scoreMap)</span><br><span class="line">&#125;</span><br><span class="line">输出：</span><br><span class="line"></span><br><span class="line"><span class="comment">//map[小明:100 张三:90]</span></span><br><span class="line"><span class="comment">//100</span></span><br><span class="line"><span class="comment">//type of a:map[string]int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//map也支持在声明的时候填充元素，例如：</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	userInfo := <span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>&#123;</span><br><span class="line">		<span class="string">&quot;username&quot;</span>: <span class="string">&quot;沙河小王子&quot;</span>,</span><br><span class="line">		<span class="string">&quot;password&quot;</span>: <span class="string">&quot;123456&quot;</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(userInfo) <span class="comment">//</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>判断某个键是否存在</strong></p>
+<blockquote>
+<p>value, ok := map[key]</p>
+</blockquote>
+<p><strong>map的遍历</strong><br>Go语言中使用for range遍历map。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	scoreMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	scoreMap[<span class="string">&quot;张三&quot;</span>] = <span class="number">90</span></span><br><span class="line">	scoreMap[<span class="string">&quot;小明&quot;</span>] = <span class="number">100</span></span><br><span class="line">	scoreMap[<span class="string">&quot;娜扎&quot;</span>] = <span class="number">60</span></span><br><span class="line">	<span class="keyword">for</span> k, v := <span class="keyword">range</span> scoreMap &#123;</span><br><span class="line">		fmt.Println(k, v)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但我们只想遍历key的时候，可以按下面的写法：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	scoreMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	scoreMap[<span class="string">&quot;张三&quot;</span>] = <span class="number">90</span></span><br><span class="line">	scoreMap[<span class="string">&quot;小明&quot;</span>] = <span class="number">100</span></span><br><span class="line">	scoreMap[<span class="string">&quot;娜扎&quot;</span>] = <span class="number">60</span></span><br><span class="line">	<span class="keyword">for</span> k := <span class="keyword">range</span> scoreMap &#123;</span><br><span class="line">		fmt.Println(k)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>注意</code>：<code>遍历map时的元素顺序与添加键值对的顺序无关。</code><br><strong>使用delete()函数删除键值对</strong><br>使用delete()内建函数从map中删除一组键值对，delete()函数的格式如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">delete</span>(<span class="keyword">map</span>, key)</span><br></pre></td></tr></table></figure>
+<p><strong>其中，</strong></p>
+<ol>
+<li>map:表示要删除键值对的map</li>
+<li>key:表示要删除的键值对的键<br>示例代码如下：<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">	scoreMap := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>)</span><br><span class="line">	scoreMap[<span class="string">&quot;张三&quot;</span>] = <span class="number">90</span></span><br><span class="line">	scoreMap[<span class="string">&quot;小明&quot;</span>] = <span class="number">100</span></span><br><span class="line">	scoreMap[<span class="string">&quot;娜扎&quot;</span>] = <span class="number">60</span></span><br><span class="line">	<span class="built_in">delete</span>(scoreMap, <span class="string">&quot;小明&quot;</span>)<span class="comment">//将小明:100从map中删除</span></span><br><span class="line">	<span class="keyword">for</span> k,v := <span class="keyword">range</span> scoreMap&#123;</span><br><span class="line">		fmt.Println(k, v)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><strong>按照指定顺序遍历map</strong></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	rand.Seed(time.Now().UnixNano()) <span class="comment">//初始化随机数种子</span></span><br><span class="line"></span><br><span class="line">	<span class="keyword">var</span> scoreMap = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">int</span>, <span class="number">200</span>)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">100</span>; i++ &#123;</span><br><span class="line">		key := fmt.Sprintf(<span class="string">&quot;stu%02d&quot;</span>, i) <span class="comment">//生成stu开头的字符串</span></span><br><span class="line">		value := rand.Intn(<span class="number">100</span>)          <span class="comment">//生成0~99的随机整数</span></span><br><span class="line">		scoreMap[key] = value</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//取出map中的所有key存入切片keys</span></span><br><span class="line">	<span class="keyword">var</span> keys = <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>, <span class="number">200</span>)</span><br><span class="line">	<span class="keyword">for</span> key := <span class="keyword">range</span> scoreMap &#123;</span><br><span class="line">		keys = <span class="built_in">append</span>(keys, key)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//对切片进行排序</span></span><br><span class="line">	sort.Strings(keys)</span><br><span class="line">	<span class="comment">//按照排序后的key遍历map</span></span><br><span class="line">	<span class="keyword">for</span> _, key := <span class="keyword">range</span> keys &#123;</span><br><span class="line">		fmt.Println(key, scoreMap[key])</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>元素为map类型的切片</strong><br>下面的代码演示了切片中的元素为map类型时的操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> mapSlice = <span class="built_in">make</span>([]<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	<span class="keyword">for</span> index, value := <span class="keyword">range</span> mapSlice &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;index:%d value:%v\n&quot;</span>, index, value)</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Println(<span class="string">&quot;after init&quot;</span>)</span><br><span class="line">	<span class="comment">// 对切片中的map元素进行初始化</span></span><br><span class="line">	mapSlice[<span class="number">0</span>] = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]<span class="keyword">string</span>, <span class="number">10</span>)</span><br><span class="line">	mapSlice[<span class="number">0</span>][<span class="string">&quot;name&quot;</span>] = <span class="string">&quot;小王子&quot;</span></span><br><span class="line">	mapSlice[<span class="number">0</span>][<span class="string">&quot;password&quot;</span>] = <span class="string">&quot;123456&quot;</span></span><br><span class="line">	mapSlice[<span class="number">0</span>][<span class="string">&quot;address&quot;</span>] = <span class="string">&quot;沙河&quot;</span></span><br><span class="line">	<span class="keyword">for</span> index, value := <span class="keyword">range</span> mapSlice &#123;</span><br><span class="line">		fmt.Printf(<span class="string">&quot;index:%d value:%v\n&quot;</span>, index, value)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>值为切片类型的map</strong><br>下面的代码演示了map中值为切片类型的操作：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> sliceMap = <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>][]<span class="keyword">string</span>, <span class="number">3</span>)</span><br><span class="line">	fmt.Println(sliceMap)</span><br><span class="line">	fmt.Println(<span class="string">&quot;after init&quot;</span>)</span><br><span class="line">	key := <span class="string">&quot;中国&quot;</span></span><br><span class="line">	value, ok := sliceMap[key]</span><br><span class="line">	<span class="keyword">if</span> !ok &#123;</span><br><span class="line">		value = <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="number">0</span>, <span class="number">2</span>)</span><br><span class="line">	&#125;</span><br><span class="line">	value = <span class="built_in">append</span>(value, <span class="string">&quot;北京&quot;</span>, <span class="string">&quot;上海&quot;</span>)</span><br><span class="line">	sliceMap[key] = value</span><br><span class="line">	fmt.Println(sliceMap)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+    
+
+    
+    <div class="page-reward">
+      <a href="javascript:void(0);" class="page-reward-btn tooltip-top" target="_self">
+        <div class="tooltip tooltip-east">
+          <span class="tooltip-item">
+            赏
+          </span>
+          <span class="tooltip-content">
+            <span class="tooltip-text">
+              <span class="tooltip-inner">
+                <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i
+                    class="icon icon-quo-right"></i></p>
+                <div class="reward-box">
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/img/alipay.png">
+                    <span class="reward-type">支付宝</span>
+                  </div>
+                  
+                  
+                  <div class="reward-box-item">
+                    <img class="reward-img" src="/img/weixin.png">
+                    <span class="reward-type">微信</span>
+                  </div>
+                  
+                </div>
+              </span>
+            </span>
+          </span>
+        </div>
+      </a>
+    </div>
+    
+
+    
+    <div class="declare"> 
+      <ul class="post-copyright">
+        <li>
+          <strong>本文作者：</strong>
+          徐天一
+        </li>
+        <li>
+          <strong>本文链接：</strong>
+          <a href="http://tianyi0801.github.io/2020/10/28/Go语言学习-部分（6） 切片 map/" title="" target="_blank">http://tianyi0801.github.io/2020/10/28/Go语言学习-部分（6） 切片 map/</a>
+        </li>
+        
+        <li>
+          <strong>版权声明： </strong>
           
-          
+          本博客所有文章除特别声明外，均采用 <a href="https://github.com/JoeyBling/hexo-theme-yilia-plus/blob/master/LICENSE" rel="external nofollow" target="_blank">MIT</a> 许可协议。转载请注明出处！
+        </li>
+        
+      </ul>
+    </div>
+    
 
+  </div>
+  <div class="article-info article-info-index">
+    
+    
+    
+
+    
+
+    
+    
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <!-- <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a> -->
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/10/28/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%886%EF%BC%89%20%E5%88%87%E7%89%87%20map/" alt="微信分享二维码"> -->
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+
+    
+    <div class="clearfix"></div>
+  </div>
   </div>
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	
-<a href="/2020/10/22/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/" class="archive-article-date">
-        <time datetime="2020-10-22T11:25:34.860Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-22</time>
-</a>
 
+
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/26/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%885%EF%BC%89%E6%95%B0%E7%BB%84/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title"></div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
+        
+        
+    </div>
+</aside>
 
-        <div class="article-info info-on-right">
-          
-          
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/2020/">&amp;laquo; Prev</a><a class="page-number" href="/archives/2020/">1</a><span class="page-number current">2</span>
-    </nav>
-  
+
+
+
+
+
+
+
+
+
 
 
           </div>
@@ -315,8 +536,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
