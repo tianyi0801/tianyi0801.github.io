@@ -10,19 +10,17 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="Go语言学习-部分（7）函数 闭包         Go语言学习-部分（7）函数 闭包 如果什么都很容易，那还叫什么选择 走上坡路一定是会累的 函数定义  func 函数名(参数)(返回值){ 函数体 }  其中：  函数名：由字母、数字、下划线组成。但函数名的第一个字母不能是数字。在同一个包内，函数名也称不能重名（包的概念详见后文）。 参数：参数由参数变量和参数变量的类型">
+  <meta name="description" content="Go语言学习-部分（8）结构体Go语言中没有“类”的概念，也不支持“类”的继承等面向对象的概念。Go语言中通过结构体的内嵌再配合接口比面向对象具有更高的扩展性和灵活性。 类型别名和自定义类型自定义类型：在Go语言中有一些基本的数据类型，如string、整型、浮点型、布尔等数据类型， Go语言中可以使用type关键字来定义自定义类型。 自定义类型是定义了一个全新的类型。我们可以基于内置的基本类型定义">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://tianyi0801.github.io/2020/10/29/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%887%EF%BC%89%E5%87%BD%E6%95%B0%20%E9%97%AD%E5%8C%85/index.html">
+<meta property="og:url" content="http://tianyi0801.github.io/2020/11/02/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%888%EF%BC%89%E7%BB%93%E6%9E%84%E4%BD%93/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Go语言学习-部分（7）函数 闭包         Go语言学习-部分（7）函数 闭包 如果什么都很容易，那还叫什么选择 走上坡路一定是会累的 函数定义  func 函数名(参数)(返回值){ 函数体 }  其中：  函数名：由字母、数字、下划线组成。但函数名的第一个字母不能是数字。在同一个包内，函数名也称不能重名（包的概念详见后文）。 参数：参数由参数变量和参数变量的类型">
+<meta property="og:description" content="Go语言学习-部分（8）结构体Go语言中没有“类”的概念，也不支持“类”的继承等面向对象的概念。Go语言中通过结构体的内嵌再配合接口比面向对象具有更高的扩展性和灵活性。 类型别名和自定义类型自定义类型：在Go语言中有一些基本的数据类型，如string、整型、浮点型、布尔等数据类型， Go语言中可以使用type关键字来定义自定义类型。 自定义类型是定义了一个全新的类型。我们可以基于内置的基本类型定义">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20201029203254794.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
-<meta property="article:published_time" content="2020-10-29T13:30:02.852Z">
-<meta property="article:modified_time" content="2020-10-29T13:30:10.296Z">
+<meta property="article:published_time" content="2020-11-02T13:39:21.578Z">
+<meta property="article:modified_time" content="2020-11-02T13:41:38.244Z">
 <meta property="article:author" content="徐天一">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20201029203254794.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -213,533 +211,137 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Go语言学习-部分（7）函数 闭包" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Go语言学习-部分（8）结构体" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
   <div class="article-entry" itemprop="articleBody">
     
-    <!DOCTYPE html>
-<html>
-
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Go语言学习-部分（7）函数 闭包</title>
-  <link rel="stylesheet" href="https://stackedit.io/style.css" />
-</head>
-
-<body class="stackedit">
-  <div class="stackedit__html"><h2><a id="Go7__0"></a>Go语言学习-部分（7）函数 闭包</h2>
-<p><code>如果什么都很容易，那还叫什么选择 走上坡路一定是会累的</code></p>
-<h3><a id="_4"></a>函数定义</h3>
+    <h2 id="Go语言学习-部分（8）结构体"><a href="#Go语言学习-部分（8）结构体" class="headerlink" title="Go语言学习-部分（8）结构体"></a>Go语言学习-部分（8）结构体</h2><p>Go语言中没有“类”的概念，也不支持“类”的继承等面向对象的概念。Go语言中通过结构体的内嵌再配合接口比面向对象具有更高的扩展性和灵活性。</p>
+<h3 id="类型别名和自定义类型"><a href="#类型别名和自定义类型" class="headerlink" title="类型别名和自定义类型"></a>类型别名和自定义类型</h3><p><strong>自定义类型</strong>：<br>在Go语言中有一些基本的数据类型，如string、整型、浮点型、布尔等数据类型， Go语言中可以使用type关键字来定义自定义类型。</p>
+<p>自定义类型是定义了一个全新的类型。我们可以基于内置的基本类型定义，也可以通过struct定义。例如：</p>
 <blockquote>
-<p>func 函数名(参数)(返回值){<br>
-函数体<br>
-}</p>
+<p>//将MyInt定义为int类型<br>type MyInt int</p>
 </blockquote>
+<a id="more"></a>
+<p>通过<code>type</code>关键字的定义，<code>MyInt</code>就是一种新的类型，它具有<code>int</code>的特性。<br><strong>类型别名</strong>“<br>类型别名是Go1.9版本添加的新功能。</p>
+<p>类型别名规定：TypeAlias只是Type的别名，本质上TypeAlias与Type是同一个类型。就像一个孩子小时候有小名、乳名，上学后用学名，英语老师又会给他起英文名，但这些名字都指的是他本人。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> TypeAlias = Type</span><br></pre></td></tr></table></figure>
+<p>我们之前见过的rune和byte就是类型别名，他们的定义如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">byte</span> = <span class="keyword">uint8</span></span><br><span class="line"><span class="keyword">type</span> <span class="keyword">rune</span> = <span class="keyword">int32</span></span><br></pre></td></tr></table></figure>
+<p><strong>类型定义和类型别名的区别</strong>:<br>类型别名与类型定义表面上看只有一个等号的差异，我们通过下面的这段代码来理解它们之间的区别。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//类型定义</span></span><br><span class="line"><span class="keyword">type</span> NewInt <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//类型别名</span></span><br><span class="line"><span class="keyword">type</span> MyInt = <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> a NewInt</span><br><span class="line">	<span class="keyword">var</span> b MyInt</span><br><span class="line">	</span><br><span class="line">	fmt.Printf(<span class="string">&quot;type of a:%T\n&quot;</span>, a) <span class="comment">//type of a:main.NewInt</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;type of b:%T\n&quot;</span>, b) <span class="comment">//type of b:int</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>结果显示a的类型是main.NewInt，表示main包下定义的NewInt类型。b的类型是int。MyInt类型只会在代码中存在，编译完成时并不会有MyInt类型。</p>
+<h3 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h3><p>Go语言中的基础数据类型可以表示一些事物的基本属性，但是当我们想表达一个事物的全部或部分属性时，这时候再用单一的基本数据类型明显就无法满足需求了，Go语言提供了一种自定义数据类型，可以封装多个基本数据类型，这种数据类型叫结构体，英文名称<code>struct</code>。 也就是我们可以通过<code>struct</code>来定义自己的类型了。</p>
+<p>Go语言中通过struct来实现面向对象。</p>
+<h4 id="结构体的定义"><a href="#结构体的定义" class="headerlink" title="结构体的定义"></a>结构体的定义</h4><p>使用type和struct关键字来定义结构体，具体代码格式如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> 类型名 <span class="keyword">struct</span> &#123;</span><br><span class="line">    字段名 字段类型</span><br><span class="line">    字段名 字段类型</span><br><span class="line">    …</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>其中：</p>
 <ul>
-<li>函数名：由字母、数字、下划线组成。但函数名的第一个字母不能是数字。在同一个包内，函数名也称不能重名（包的概念详见后文）。</li>
-<li>参数：参数由参数变量和参数变量的类型组成，多个参数之间使用,分隔。</li>
-<li>返回值：返回值由返回值变量和其变量类型组成，也可以只写返回值的类型，多个返回值必须用()包裹，并用,分隔。</li>
-<li>函数体：实现指定功能的代码块。</li>
+<li>类型名：标识自定义结构体的名称，在同一个包内不能重复。</li>
+<li>字段名：表示结构体字段名。结构体中的字段名必须唯一。</li>
+<li>字段类型：表示结构体字段的具体类型。</li>
 </ul>
-<p>我们先来定义一个求两个数之和的函数：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> x <span class="token operator">+</span> y
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>函数的参数和返回值都是可选的，例如我们可以实现一个既不需要参数也没有返回值的函数：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"Hello 沙河"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>函数的调用</strong><br>
-定义了函数之后，我们可以通过函数名()的方式调用函数。 例如我们调用上面定义的两个函数，代码如下：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">sayHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	ret <span class="token operator">:=</span> <span class="token function">intSum</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>注意，调用有返回值的函数时，可以不接收其返回值。<br>
-<strong>参数</strong><br>
-类型简写:<br>
-函数的参数中如果相邻变量的类型相同，则可以省略类型，例如：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> x <span class="token operator">+</span> y
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>上面的代码中，intSum函数有两个参数，这两个参数的类型均为int，因此可以省略x的类型，因为y后面有类型说明，x参数也是该类型。</p>
-<p><strong>可变参数</strong><br>
-可变参数是指函数的参数<code>数量</code>不固定。Go语言中的可变参数通过在参数名后加<code>...</code>来标识。</p>
-<p>注意：可变参数通常要作为函数的最后一个参数。</p>
-<p>举个例子：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum2</span><span class="token punctuation">(</span>x <span class="token operator">...</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token comment">//x是一个切片</span>
-	sum <span class="token operator">:=</span> <span class="token number">0</span>
-	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> x <span class="token punctuation">&#123;</span>
-		sum <span class="token operator">=</span> sum <span class="token operator">+</span> v
-	<span class="token punctuation">&#125;</span>
-	<span class="token keyword">return</span> sum
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>调用上面的函数：</p>
-<pre><code class="prism language-go">ret1 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-ret2 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
-ret3 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
-ret4 <span class="token operator">:=</span> <span class="token function">intSum2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
-fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret1<span class="token punctuation">,</span> ret2<span class="token punctuation">,</span> ret3<span class="token punctuation">,</span> ret4<span class="token punctuation">)</span> <span class="token comment">//0 10 30 60</span>
-</code></pre>
-<p>固定参数搭配可变参数使用时，可变参数要放在固定参数的后面，示例代码如下：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">intSum3</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">,</span> y <span class="token operator">...</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
-	sum <span class="token operator">:=</span> x
-	<span class="token keyword">for</span> <span class="token boolean">_</span><span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> y <span class="token punctuation">&#123;</span>
-		sum <span class="token operator">=</span> sum <span class="token operator">+</span> v
-	<span class="token punctuation">&#125;</span>
-	<span class="token keyword">return</span> sum
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>调用上述函数：</p>
-<pre><code class="prism language-go">ret5 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
-ret6 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
-ret7 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
-ret8 <span class="token operator">:=</span> <span class="token function">intSum3</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span>
-fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret5<span class="token punctuation">,</span> ret6<span class="token punctuation">,</span> ret7<span class="token punctuation">,</span> ret8<span class="token punctuation">)</span> <span class="token comment">//100 110 130 160</span>
-</code></pre>
-<p>本质上，函数的可变参数是通过切片来实现的。</p>
-<h3><a id="_93"></a>返回值</h3>
-<p><strong>多返回值</strong><br>
-Go语言中函数支持多返回值，函数如果有多个返回值时必须用()将所有返回值包裹起来。</p>
-<p>举个例子：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	sum <span class="token operator">:=</span> x <span class="token operator">+</span> y
-	sub <span class="token operator">:=</span> x <span class="token operator">-</span> y
-	<span class="token keyword">return</span> sum<span class="token punctuation">,</span> sub
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>返回值命名</strong><br>
-函数定义时可以给返回值命名，并在函数体中直接使用这些变量，最后通过return关键字返回。</p>
-<p>例如：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>sum<span class="token punctuation">,</span> sub <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	sum <span class="token operator">=</span> x <span class="token operator">+</span> y
-	sub <span class="token operator">=</span> x <span class="token operator">-</span> y
-	<span class="token keyword">return</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>返回值补充</strong><br>
-当我们的一个函数返回值类型为slice时，nil可以看做是一个有效的slice，没必要显示返回一个长度为0的切片。</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">someFunc</span><span class="token punctuation">(</span>x <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">if</span> x <span class="token operator">==</span> <span class="token string">""</span> <span class="token punctuation">&#123;</span>
-		<span class="token keyword">return</span> <span class="token boolean">nil</span> <span class="token comment">// 没必要返回[]int&#123;&#125;</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token operator">...</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<h3><a id="_126"></a>函数进阶</h3>
-<p><strong>变量作用域</strong><br>
-<strong>全局变量</strong><br>
-全局变量是定义在函数外部的变量，它在程序整个运行周期内都有效。 在函数中可以访问到全局变量。</p>
-<pre><code class="prism language-go"><span class="token keyword">package</span> main
-
-<span class="token keyword">import</span> <span class="token string">"fmt"</span>
-
-<span class="token comment">//定义全局变量num</span>
-<span class="token keyword">var</span> num <span class="token builtin">int64</span> <span class="token operator">=</span> <span class="token number">10</span>
-
-<span class="token keyword">func</span> <span class="token function">testGlobalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"num=%d\n"</span><span class="token punctuation">,</span> num<span class="token punctuation">)</span> <span class="token comment">//函数中可以访问全局变量num</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">testGlobalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">//num=10</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>局部变量</strong><br>
-局部变量又分为两种： 函数内定义的变量无法在该函数外使用，例如下面的示例代码main函数中无法使用testLocalVar函数中定义的变量x：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">testLocalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token comment">//定义一个函数局部变量x,仅在该函数内生效</span>
-	<span class="token keyword">var</span> x <span class="token builtin">int64</span> <span class="token operator">=</span> <span class="token number">100</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"x=%d\n"</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">testLocalVar</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token comment">// 此时无法使用变量x</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>如果局部变量和全局变量重名，优先访问局部变量。</p>
-<pre><code class="prism language-go"><span class="token keyword">package</span> main
-
-<span class="token keyword">import</span> <span class="token string">"fmt"</span>
-
-<span class="token comment">//定义全局变量num</span>
-<span class="token keyword">var</span> num <span class="token builtin">int64</span> <span class="token operator">=</span> <span class="token number">10</span>
-
-<span class="token keyword">func</span> <span class="token function">testNum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	num <span class="token operator">:=</span> <span class="token number">100</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"num=%d\n"</span><span class="token punctuation">,</span> num<span class="token punctuation">)</span> <span class="token comment">// 函数中优先使用局部变量</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">testNum</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment">// num=100</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>接下来我们来看一下语句块定义的变量，通常我们会在if条件判断、for循环、switch语句上使用这种定义变量的方式。</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">testLocalVar2</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token comment">//函数的参数也是只在本函数中生效</span>
-	<span class="token keyword">if</span> x <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token punctuation">&#123;</span>
-		z <span class="token operator">:=</span> <span class="token number">100</span> <span class="token comment">//变量z只在if语句块生效</span>
-		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>z<span class="token punctuation">)</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token comment">//fmt.Println(z)//此处无法使用变量z</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>还有我们之前讲过的for循环语句中定义的变量，也是只在for语句块中生效：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">testLocalVar3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">for</span> i <span class="token operator">:=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span> <span class="token punctuation">&#123;</span>
-		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token comment">//变量i只在当前for语句块中生效</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token comment">//fmt.Println(i) //此处无法使用变量i</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>函数类型与变量</strong><br>
-<strong>定义函数类型</strong><br>
-我们可以使用type关键字来定义一个函数类型，具体格式如下：</p>
-<blockquote>
-<p>type calculation func(int, int) int</p>
-</blockquote>
-<p>上面语句定义了一个calculation类型，它是一种函数类型，这种函数接收两个int类型的参数并且返回一个int类型的返回值。</p>
-<p>简单来说，凡是满足这个条件的函数都是calculation类型的函数，例如下面的add和sub是calculation类型。</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> x <span class="token operator">+</span> y
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">sub</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> x <span class="token operator">-</span> y
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>add和sub都能赋值给calculation类型的变量。</p>
-<pre><code class="prism language-go"><span class="token keyword">var</span> c calculation
-c <span class="token operator">=</span> add
-</code></pre>
-<p>函数类型变量<br>
-我们可以声明函数类型的变量并且为该变量赋值：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">var</span> c calculation               <span class="token comment">// 声明一个calculation类型的变量c</span>
-	c <span class="token operator">=</span> add                         <span class="token comment">// 把add赋值给c</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"type of c:%T\n"</span><span class="token punctuation">,</span> c<span class="token punctuation">)</span> <span class="token comment">// type of c:main.calculation</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">c</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>            <span class="token comment">// 像调用add一样调用c</span>
-
-	f <span class="token operator">:=</span> add                        <span class="token comment">// 将函数add赋值给变量f1</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"type of f:%T\n"</span><span class="token punctuation">,</span> f<span class="token punctuation">)</span> <span class="token comment">// type of f:func(int, int) int</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span>          <span class="token comment">// 像调用add一样调用f</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><code>注：</code>这里函数可以赋值给相同类型的变量，同时这个变量就相当于这个函数使用</p>
-<h3><a id="_234"></a>高阶函数</h3>
-<p>高阶函数分为函数作为参数和函数作为返回值两部分。</p>
-<p><strong>函数作为参数</strong><br>
-函数可以作为参数：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">add</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> x <span class="token operator">+</span> y
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">,</span> op <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-<span class="token comment">//这里函数作为参数名称为op 类型为func（int，int）int</span>
-<span class="token comment">//最后整体的返回值是int</span>
-	<span class="token keyword">return</span> <span class="token function">op</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	ret2 <span class="token operator">:=</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> add<span class="token punctuation">)</span><span class="token comment">//</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>ret2<span class="token punctuation">)</span> <span class="token comment">//30</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>函数作为返回值</strong><br>
-函数也可以作为返回值：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">do</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">switch</span> s <span class="token punctuation">&#123;</span>
-	<span class="token keyword">case</span> <span class="token string">"+"</span><span class="token punctuation">:</span>
-		<span class="token keyword">return</span> add<span class="token punctuation">,</span> <span class="token boolean">nil</span>
-	<span class="token keyword">case</span> <span class="token string">"-"</span><span class="token punctuation">:</span>
-		<span class="token keyword">return</span> sub<span class="token punctuation">,</span> <span class="token boolean">nil</span>
-	<span class="token keyword">default</span><span class="token punctuation">:</span>
-		err <span class="token operator">:=</span> errors<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token string">"无法识别的操作符"</span><span class="token punctuation">)</span>
-		<span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> err
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<h3><a id="defer_269"></a>defer语句</h3>
-<p>Go语言中的defer语句会将其后面跟随的语句进行延迟处理。在defer归属的函数即将返回时，将延迟处理的语句按defer定义的逆序进行执行，也就是说，先被defer的语句最后被执行，最后被defer的语句，最先被执行。</p>
-<p>举个例子：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"start"</span><span class="token punctuation">)</span>
-	<span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-	<span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-	<span class="token keyword">defer</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"end"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>输出结果：</p>
-<pre><code class="prism language-go">start
-end
-<span class="token number">3</span>
-<span class="token number">2</span>
-<span class="token number">1</span>
-</code></pre>
-<p>由于defer语句延迟调用的特性，所以defer语句能非常方便的处理资源释放问题。比如：资源清理、文件关闭、解锁及记录时间等。</p>
-<p><strong>defer执行的时机</strong><br>
-在Go语言的函数中return语句在底层并不是原子操作，它分为给返回值赋值和RET指令两步。而defer语句执行的时机就在返回值赋值操作后，RET指令执行前。具体如下图所示：<br>
-<img src="https://img-blog.csdnimg.cn/20201029203254794.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"><br>
-<strong>defer经典案例</strong><br>
-阅读下面的代码，写出最后的打印结果。</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">f1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	x <span class="token operator">:=</span> <span class="token number">5</span>
-	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		x<span class="token operator">++</span>
-	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token keyword">return</span> x
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		x<span class="token operator">++</span>
-	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token keyword">return</span> <span class="token number">5</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">f3</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	x <span class="token operator">:=</span> <span class="token number">5</span>
-	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		x<span class="token operator">++</span>
-	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token keyword">return</span> x
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">f4</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		x<span class="token operator">++</span>
-	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-	<span class="token keyword">return</span> <span class="token number">5</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f3</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f4</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p><strong>defer面试题</strong></p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>index <span class="token builtin">string</span><span class="token punctuation">,</span> a<span class="token punctuation">,</span> b <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	ret <span class="token operator">:=</span> a <span class="token operator">+</span> b
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>index<span class="token punctuation">,</span> a<span class="token punctuation">,</span> b<span class="token punctuation">,</span> ret<span class="token punctuation">)</span>
-	<span class="token keyword">return</span> ret
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	x <span class="token operator">:=</span> <span class="token number">1</span>
-	y <span class="token operator">:=</span> <span class="token number">2</span>
-	<span class="token keyword">defer</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"AA"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"A"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
-	x <span class="token operator">=</span> <span class="token number">10</span>
-	<span class="token keyword">defer</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"BB"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token string">"B"</span><span class="token punctuation">,</span> x<span class="token punctuation">,</span> y<span class="token punctuation">)</span><span class="token punctuation">)</span>
-	y <span class="token operator">=</span> <span class="token number">20</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>问，上面代码的输出结果是？（提示：defer注册要延迟执行的函数时该函数所有的参数都需要确定其值）</p>
-<h3><a id="_352"></a>内置函数介绍</h3>
-
-<table>
-<thead>
-<tr>
-<th>内置函数</th>
-<th>介绍</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>close</td>
-<td>主要用来关闭channel</td>
-</tr>
-<tr>
-<td>len</td>
-<td>用来求长度，比如string、array、slice、map、channel</td>
-</tr>
-<tr>
-<td>new</td>
-<td>用来分配内存，主要用来分配值类型，比如int、struct。返回的是指针</td>
-</tr>
-<tr>
-<td>make</td>
-<td>用来分配内存，主要用来分配引用类型，比如chan、map、slice</td>
-</tr>
-<tr>
-<td>append</td>
-<td>用来追加元素到数组、slice中</td>
-</tr>
-<tr>
-<td>panic和recover</td>
-<td>用来做错误处理</td>
-</tr>
-</tbody>
-</table><p><strong>panic/recover</strong>:<br>
-Go语言中目前（Go1.12）是没有异常机制，但是使用panic/recover模式来处理错误。 panic可以在任何地方引发，但recover只有在defer调用的函数中有效。 首先来看一个例子：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func A"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"panic in B"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func C"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>输出：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> A
-<span class="token builtin">panic</span><span class="token punctuation">:</span> <span class="token builtin">panic</span> in B
-
-goroutine <span class="token number">1</span> <span class="token punctuation">[</span>running<span class="token punctuation">]</span><span class="token punctuation">:</span>
-main<span class="token punctuation">.</span><span class="token function">funcB</span><span class="token punctuation">(</span><span class="token operator">...</span><span class="token punctuation">)</span>
-        <span class="token operator">...</span><span class="token operator">/</span>code<span class="token operator">/</span><span class="token keyword">func</span><span class="token operator">/</span>main<span class="token punctuation">.</span><span class="token keyword">go</span><span class="token punctuation">:</span><span class="token number">12</span>
-main<span class="token punctuation">.</span><span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-        <span class="token operator">...</span><span class="token operator">/</span>code<span class="token operator">/</span><span class="token keyword">func</span><span class="token operator">/</span>main<span class="token punctuation">.</span><span class="token keyword">go</span><span class="token punctuation">:</span><span class="token number">20</span> <span class="token operator">+</span><span class="token number">0x98</span>
-</code></pre>
-<p>程序运行期间funcB中引发了panic导致程序崩溃，异常退出了。这个时候我们就可以通过recover将程序恢复回来，继续往后执行。</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func A"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		err <span class="token operator">:=</span> <span class="token function">recover</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-		<span class="token comment">//如果程序出出现了panic错误,可以通过recover恢复过来</span>
-		<span class="token keyword">if</span> err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">&#123;</span>
-			fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"recover in B"</span><span class="token punctuation">)</span>
-		<span class="token punctuation">&#125;</span>
-	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"panic in B"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"func C"</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token function">funcA</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token function">funcB</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	<span class="token function">funcC</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>注意：</p>
+<p>举个例子，我们定义一个Person（人）结构体，代码如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	city <span class="keyword">string</span></span><br><span class="line">	age  <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样类型的字段也可以写在一行，</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> person1 <span class="keyword">struct</span> &#123;</span><br><span class="line">	name, city <span class="keyword">string</span></span><br><span class="line">	age        <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样我们就拥有了一个<code>person</code>的自定义类型，它有<code>name</code>、<code>city</code>、<code>age</code>三个字段，分别表示姓名、城市和年龄。这样我们使用这个<code>person</code>结构体就能够很方便的在程序中表示和存储人信息了。</p>
+<p>语言内置的基础数据类型是用来描述一个值的，而结构体是用来描述一组值的。比如一个人有名字、年龄和居住城市等，本质上是一种聚合型的数据类型</p>
+<h4 id="结构体实例化"><a href="#结构体实例化" class="headerlink" title="结构体实例化"></a>结构体实例化</h4><p>只有当结构体实例化时，才会真正地分配内存。也就是必须实例化后才能使用结构体的字段。</p>
+<p>结构体本身也是一种类型，我们可以像声明内置类型一样使用var关键字声明结构体类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> 结构体实例 结构体类型</span><br></pre></td></tr></table></figure>
+<p><strong>基本实例化</strong><br>举个例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	city <span class="keyword">string</span></span><br><span class="line">	age  <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p1 person</span><br><span class="line">	p1.name = <span class="string">&quot;沙河娜扎&quot;</span></span><br><span class="line">	p1.city = <span class="string">&quot;北京&quot;</span></span><br><span class="line">	p1.age = <span class="number">18</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;p1=%v\n&quot;</span>, p1)  <span class="comment">//p1=&#123;沙河娜扎 北京 18&#125;</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;p1=%#v\n&quot;</span>, p1) <span class="comment">//p1=main.person&#123;name:&quot;沙河娜扎&quot;, city:&quot;北京&quot;, age:18&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们通过.来访问结构体的字段（成员变量）,例如p1.name和p1.age等。也就是说直接定义一个这个类型的对象即可，不同于java中new对象。</p>
+<p><strong>匿名结构体</strong><br>在定义一些临时数据结构等场景下还可以使用匿名结构体。<br>类似于java中的直接调用类里面的属性或方法：类名<code>.</code>属性</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> main</span><br><span class="line">     </span><br><span class="line"><span class="keyword">import</span> (</span><br><span class="line">    <span class="string">&quot;fmt&quot;</span></span><br><span class="line">)</span><br><span class="line">     </span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">var</span> user <span class="keyword">struct</span>&#123;Name <span class="keyword">string</span>; Age <span class="keyword">int</span>&#125;</span><br><span class="line">    user.Name = <span class="string">&quot;小王子&quot;</span></span><br><span class="line">    user.Age = <span class="number">18</span></span><br><span class="line">    fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, user)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>创建指针类型结构体</strong><br>我们还可以通过使用new关键字对结构体进行实例化，得到的是结构体的地址。<br>注意：Go语言中申请内存的方法有new和make，new一般用于int等基本类型，返回的是类型的指针。而make返回的是本身。<br>格式如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">new</span>(person)</span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, p2)     <span class="comment">//*main.person</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;p2=%#v\n&quot;</span>, p2) <span class="comment">//p2=&amp;main.person&#123;name:&quot;&quot;, city:&quot;&quot;, age:0&#125;</span></span><br></pre></td></tr></table></figure>
+<p>从打印的结果中我们可以看出p2是一个结构体指针。</p>
+<p>需要注意的是在Go语言中支持对结构体指针直接使用.来访问结构体的成员。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> p2 = <span class="built_in">new</span>(person)</span><br><span class="line">p2.name = <span class="string">&quot;小王子&quot;</span></span><br><span class="line">p2.age = <span class="number">28</span></span><br><span class="line">p2.city = <span class="string">&quot;上海&quot;</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;p2=%#v\n&quot;</span>, p2) <span class="comment">//p2=&amp;main.person&#123;name:&quot;小王子&quot;, city:&quot;上海&quot;, age:28&#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>取结构体的地址实例化</strong></p>
+<p>使用&amp;对结构体进行取地址操作相当于对该结构体类型进行了一次new实例化操作。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">p3 := &amp;person&#123;&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;%T\n&quot;</span>, p3)     <span class="comment">//*main.person</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;p3=%#v\n&quot;</span>, p3) <span class="comment">//p3=&amp;main.person&#123;name:&quot;&quot;, city:&quot;&quot;, age:0&#125;</span></span><br><span class="line">p3.name = <span class="string">&quot;七米&quot;</span></span><br><span class="line">p3.age = <span class="number">30</span></span><br><span class="line">p3.city = <span class="string">&quot;成都&quot;</span></span><br><span class="line">fmt.Printf(<span class="string">&quot;p3=%#v\n&quot;</span>, p3) <span class="comment">//p3=&amp;main.person&#123;name:&quot;七米&quot;, city:&quot;成都&quot;, age:30&#125;</span></span><br></pre></td></tr></table></figure>
+<p>p3.name = “七米”其实在底层是(*p3).name = “七米”，这是Go语言帮我们实现的语法糖。</p>
+<p><strong>结构体初始化</strong><br>没有初始化的结构体，其成员变量都是对应其类型的零值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	city <span class="keyword">string</span></span><br><span class="line">	age  <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> p4 person</span><br><span class="line">	fmt.Printf(<span class="string">&quot;p4=%#v\n&quot;</span>, p4) <span class="comment">//p4=main.person&#123;name:&quot;&quot;, city:&quot;&quot;, age:0&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>使用键值对初始化</strong><br>使用键值对对结构体进行初始化时，键对应结构体的字段，值对应该字段的初始值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p5 := person&#123;</span><br><span class="line">	name: <span class="string">&quot;小王子&quot;</span>,</span><br><span class="line">	city: <span class="string">&quot;北京&quot;</span>,</span><br><span class="line">	age:  <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;p5=%#v\n&quot;</span>, p5) <span class="comment">//p5=main.person&#123;name:&quot;小王子&quot;, city:&quot;北京&quot;, age:18&#125;</span></span><br></pre></td></tr></table></figure>
+<p>也可以对结构体指针进行键值对初始化，例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p6 := &amp;person&#123;</span><br><span class="line">	name: <span class="string">&quot;小王子&quot;</span>,</span><br><span class="line">	city: <span class="string">&quot;北京&quot;</span>,</span><br><span class="line">	age:  <span class="number">18</span>,</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;p6=%#v\n&quot;</span>, p6) <span class="comment">//p6=&amp;main.person&#123;name:&quot;小王子&quot;, city:&quot;北京&quot;, age:18&#125;</span></span><br></pre></td></tr></table></figure>
+<p>当某些字段没有初始值的时候，该字段可以不写。此时，没有指定初始值的字段的值就是该字段类型的零值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">p7 := &amp;person&#123;</span><br><span class="line">	city: <span class="string">&quot;北京&quot;</span>,</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;p7=%#v\n&quot;</span>, p7) <span class="comment">//p7=&amp;main.person&#123;name:&quot;&quot;, city:&quot;北京&quot;, age:0&#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>使用值的列表初始化</strong><br>初始化结构体的时候可以简写，也就是初始化的时候不写键，直接写值：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">p8 := &amp;person&#123;</span><br><span class="line">	<span class="string">&quot;沙河娜扎&quot;</span>,</span><br><span class="line">	<span class="string">&quot;北京&quot;</span>,</span><br><span class="line">	<span class="number">28</span>,</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;p8=%#v\n&quot;</span>, p8) <span class="comment">//p8=&amp;main.person&#123;name:&quot;沙河娜扎&quot;, city:&quot;北京&quot;, age:28&#125;</span></span><br></pre></td></tr></table></figure>
+<p>使用这种格式初始化时，需要注意：</p>
 <ul>
-<li>recover()必须搭配defer使用。</li>
-<li>defer一定要在可能引发panic的语句之前定义。</li>
+<li>必须初始化结构体的所有字段。</li>
+<li>初始值的填充顺序必须与字段在结构体中的声明顺序一致。</li>
+<li>该方式不能和键值初始化方式混用。</li>
+<li>结构体内存布局</li>
+<li>结构体占用一块连续的内存。<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> test <span class="keyword">struct</span> &#123;</span><br><span class="line">	a <span class="keyword">int8</span></span><br><span class="line">	b <span class="keyword">int8</span></span><br><span class="line">	c <span class="keyword">int8</span></span><br><span class="line">	d <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br><span class="line">n := test&#123;</span><br><span class="line">	<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>,</span><br><span class="line">&#125;</span><br><span class="line">fmt.Printf(<span class="string">&quot;n.a %p\n&quot;</span>, &amp;n.a)</span><br><span class="line">fmt.Printf(<span class="string">&quot;n.b %p\n&quot;</span>, &amp;n.b)</span><br><span class="line">fmt.Printf(<span class="string">&quot;n.c %p\n&quot;</span>, &amp;n.c)</span><br><span class="line">fmt.Printf(<span class="string">&quot;n.d %p\n&quot;</span>, &amp;n.d)</span><br><span class="line">输出：</span><br><span class="line"></span><br><span class="line">n.a <span class="number">0xc0000a0060</span></span><br><span class="line">n.b <span class="number">0xc0000a0061</span></span><br><span class="line">n.c <span class="number">0xc0000a0062</span></span><br><span class="line">n.d <span class="number">0xc0000a0063</span></span><br></pre></td></tr></table></figure>
+【进阶知识点】关于Go语言中的内存对齐推荐阅读:在 Go 中恰到好处的内存对齐</li>
 </ul>
-<h3><a id="_423"></a>匿名函数和闭包</h3>
-<p><strong>匿名函数</strong><br>
-函数当然还可以作为返回值，但是在Go语言中函数内部不能再像之前那样定义函数了，只能定义匿名函数。匿名函数就是没有函数名的函数，匿名函数的定义格式如下：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span><span class="token punctuation">(</span>参数<span class="token punctuation">)</span><span class="token punctuation">(</span>返回值<span class="token punctuation">)</span><span class="token punctuation">&#123;</span>
-    函数体
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>匿名函数因为没有函数名，所以没办法像普通函数那样调用，所以匿名函数需要保存到某个变量或者作为立即执行函数:</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token comment">// 将匿名函数保存到变量</span>
-	add <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x <span class="token operator">+</span> y<span class="token punctuation">)</span>
-	<span class="token punctuation">&#125;</span>
-	<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span> <span class="token comment">// 通过变量调用匿名函数</span>
-
-	<span class="token comment">//自执行函数：匿名函数定义完加()直接执行</span>
-	<span class="token keyword">func</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-		fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x <span class="token operator">+</span> y<span class="token punctuation">)</span>
-	<span class="token punctuation">&#125;</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>匿名函数多用于实现回调函数和闭包。</p>
-<p><strong>闭包</strong><br>
-闭包指的是一个函数和与其相关的引用环境组合而成的实体。简单来说，闭包=函数+引用环境。 首先我们来看一个例子：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">var</span> x <span class="token builtin">int</span>
-	<span class="token keyword">return</span> <span class="token keyword">func</span><span class="token punctuation">(</span>y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-		x <span class="token operator">+=</span> y
-		<span class="token keyword">return</span> x
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">var</span> f <span class="token operator">=</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//10</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//30</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//60</span>
-
-	f1 <span class="token operator">:=</span> <span class="token function">adder</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//40</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//90</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>变量f是一个函数并且它引用了其外部作用域中的x变量，此时f就是一个闭包。 在f的生命周期内，变量x也一直有效。 闭包进阶示例1：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">adder2</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> <span class="token keyword">func</span><span class="token punctuation">(</span>y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-		x <span class="token operator">+=</span> y
-		<span class="token keyword">return</span> x
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">var</span> f <span class="token operator">=</span> <span class="token function">adder2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//20</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//40</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//70</span>
-
-	f1 <span class="token operator">:=</span> <span class="token function">adder2</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//60</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//110</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>闭包进阶示例2：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">makeSuffixFunc</span><span class="token punctuation">(</span>suffix <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">&#123;</span>
-	<span class="token keyword">return</span> <span class="token keyword">func</span><span class="token punctuation">(</span>name <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">&#123;</span>
-		<span class="token keyword">if</span> <span class="token operator">!</span>strings<span class="token punctuation">.</span><span class="token function">HasSuffix</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> suffix<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-			<span class="token keyword">return</span> name <span class="token operator">+</span> suffix
-		<span class="token punctuation">&#125;</span>
-		<span class="token keyword">return</span> name
-	<span class="token punctuation">&#125;</span>
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	jpgFunc <span class="token operator">:=</span> <span class="token function">makeSuffixFunc</span><span class="token punctuation">(</span><span class="token string">".jpg"</span><span class="token punctuation">)</span>
-	txtFunc <span class="token operator">:=</span> <span class="token function">makeSuffixFunc</span><span class="token punctuation">(</span><span class="token string">".txt"</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">jpgFunc</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//test.jpg</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">txtFunc</span><span class="token punctuation">(</span><span class="token string">"test"</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//test.txt</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>闭包进阶示例3：</p>
-<pre><code class="prism language-go"><span class="token keyword">func</span> <span class="token function">calc</span><span class="token punctuation">(</span>base <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	add <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-		base <span class="token operator">+=</span> i
-		<span class="token keyword">return</span> base
-	<span class="token punctuation">&#125;</span>
-
-	sub <span class="token operator">:=</span> <span class="token keyword">func</span><span class="token punctuation">(</span>i <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">&#123;</span>
-		base <span class="token operator">-=</span> i
-		<span class="token keyword">return</span> base
-	<span class="token punctuation">&#125;</span>
-	<span class="token keyword">return</span> add<span class="token punctuation">,</span> sub
-<span class="token punctuation">&#125;</span>
-
-<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
-	f1<span class="token punctuation">,</span> f2 <span class="token operator">:=</span> <span class="token function">calc</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//11 9</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//12 8</span>
-	fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token function">f1</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">f2</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment">//13 7</span>
-<span class="token punctuation">&#125;</span>
-</code></pre>
-<p>闭包其实并不复杂，只要牢记闭包=函数+引用环境。</p>
-</div>
-</body>
-
-</html>
+<h4 id="空结构体"><a href="#空结构体" class="headerlink" title="空结构体"></a>空结构体</h4><p>空结构体是不占用空间的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> v <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line">fmt.Println(unsafe.Sizeof(v))  <span class="comment">// 0</span></span><br></pre></td></tr></table></figure>
+<p>面试题<br>请问下面代码的执行结果是什么？</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> student <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age  <span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	m := <span class="built_in">make</span>(<span class="keyword">map</span>[<span class="keyword">string</span>]*student)</span><br><span class="line">	stus := []student&#123;</span><br><span class="line">		&#123;name: <span class="string">&quot;小王子&quot;</span>, age: <span class="number">18</span>&#125;,</span><br><span class="line">		&#123;name: <span class="string">&quot;娜扎&quot;</span>, age: <span class="number">23</span>&#125;,</span><br><span class="line">		&#123;name: <span class="string">&quot;大王八&quot;</span>, age: <span class="number">9000</span>&#125;,</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> _, stu := <span class="keyword">range</span> stus &#123;</span><br><span class="line">		m[stu.name] = &amp;stu</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> k, v := <span class="keyword">range</span> m &#123;</span><br><span class="line">		fmt.Println(k, <span class="string">&quot;=&gt;&quot;</span>, v.name)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>构造函数</strong><br>Go语言的结构体没有构造函数，我们可以自己实现。 例如，下方的代码就实现了一个person的构造函数。 因为struct是值类型，如果结构体比较复杂的话，值拷贝性能开销会比较大，所以该构造函数返回的是结构体指针类型。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">newPerson</span><span class="params">(name, city <span class="keyword">string</span>, age <span class="keyword">int8</span>)</span> *<span class="title">person</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;person&#123;</span><br><span class="line">		name: name,</span><br><span class="line">		city: city,</span><br><span class="line">		age:  age,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用构造函数</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">p9 := newPerson(<span class="string">&quot;张三&quot;</span>, <span class="string">&quot;沙河&quot;</span>, <span class="number">90</span>)</span><br><span class="line">fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, p9) <span class="comment">//&amp;main.person&#123;name:&quot;张三&quot;, city:&quot;沙河&quot;, age:90&#125;</span></span><br></pre></td></tr></table></figure>
+<p><strong>方法和接收者</strong><br>Go语言中的方法（Method）是一种作用于特定类型变量的函数。这种特定类型变量叫做接收者（Receiver）。接收者的概念就类似于其他语言中的this或者 self。</p>
+<p>方法的定义格式如下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(接收者变量 接收者类型)</span> 方法名<span class="params">(参数列表)</span> <span class="params">(返回参数)</span></span> &#123;</span><br><span class="line">    函数体</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中，</p>
+<ul>
+<li>接收者变量：接收者中的参数变量名在命名时，官方建议使用接收者类型名称首字母的小写，而不是self、this之类的命名。例如，Person类型的接收者变量应该命名为 p，Connector类型的接收者变量应该命名为c等。</li>
+<li>接收者类型：接收者类型和参数类似，可以是指针类型和非指针类型。</li>
+<li>方法名、参数列表、返回参数：具体格式与函数定义相同。<br>举个例子：<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Person 结构体</span></span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">	age  <span class="keyword">int8</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//NewPerson 构造函数</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">NewPerson</span><span class="params">(name <span class="keyword">string</span>, age <span class="keyword">int8</span>)</span> *<span class="title">Person</span></span> &#123;</span><br><span class="line">	<span class="keyword">return</span> &amp;Person&#123;</span><br><span class="line">		name: name,</span><br><span class="line">		age:  age,</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Dream Person做梦的方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p Person)</span> <span class="title">Dream</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%s的梦想是学好Go语言！\n&quot;</span>, p.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	p1 := NewPerson(<span class="string">&quot;小王子&quot;</span>, <span class="number">25</span>)</span><br><span class="line">	p1.Dream()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+方法与函数的区别是，函数不属于任何类型，方法属于特定的类型。</li>
+</ul>
+<p><strong>指针类型的接收者</strong><br>指针类型的接收者由一个结构体的指针组成，由于指针的特性，调用方法时修改接收者指针的任意成员变量，在方法结束后，修改都是有效的。这种方式就十分接近于其他语言中面向对象中的this或者self。 例如我们为Person添加一个SetAge方法，来修改实例变量的年龄。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SetAge 设置p的年龄</span></span><br><span class="line"><span class="comment">// 使用指针接收者</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">SetAge</span><span class="params">(newAge <span class="keyword">int8</span>)</span></span> &#123;</span><br><span class="line">	p.age = newAge</span><br><span class="line">&#125;</span><br><span class="line">调用该方法：</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	p1 := NewPerson(<span class="string">&quot;小王子&quot;</span>, <span class="number">25</span>)</span><br><span class="line">	fmt.Println(p1.age) <span class="comment">// 25</span></span><br><span class="line">	p1.SetAge(<span class="number">30</span>)</span><br><span class="line">	fmt.Println(p1.age) <span class="comment">// 30</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>值类型的接收者</strong><br>当方法作用于值类型接收者时，Go语言会在代码运行时将接收者的值复制一份。在值类型接收者的方法中可以获取接收者的成员值，但修改操作只是针对副本，无法修改接收者变量本身。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// SetAge2 设置p的年龄</span></span><br><span class="line"><span class="comment">// 使用值接收者</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p Person)</span> <span class="title">SetAge2</span><span class="params">(newAge <span class="keyword">int8</span>)</span></span> &#123;</span><br><span class="line">	p.age = newAge</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	p1 := NewPerson(<span class="string">&quot;小王子&quot;</span>, <span class="number">25</span>)</span><br><span class="line">	p1.Dream()</span><br><span class="line">	fmt.Println(p1.age) <span class="comment">// 25</span></span><br><span class="line">	p1.SetAge2(<span class="number">30</span>) <span class="comment">// (*p1).SetAge2(30)</span></span><br><span class="line">	fmt.Println(p1.age) <span class="comment">// 25</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>什么时候应该使用指针类型接收者</strong></p>
+<ul>
+<li>需要修改接收者中的值</li>
+<li>接收者是拷贝代价比较大的大对象</li>
+<li>保证一致性，如果有某个方法使用了指针接收者，那么其他的方法也应该使用指针接收者。</li>
+</ul>
+<p><strong>任意类型添加方法</strong><br>在Go语言中，接收者的类型可以是任何类型，不仅仅是结构体，任何类型都可以拥有方法。 举个例子，我们基于内置的int类型使用type关键字可以定义新的自定义类型，然后为我们的自定义类型添加方法。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//MyInt 将int定义为自定义MyInt类型</span></span><br><span class="line"><span class="keyword">type</span> MyInt <span class="keyword">int</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//SayHello 为MyInt添加一个SayHello的方法</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m MyInt)</span> <span class="title">SayHello</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Println(<span class="string">&quot;Hello, 我是一个int。&quot;</span>)</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> m1 MyInt</span><br><span class="line">	m1.SayHello() <span class="comment">//Hello, 我是一个int。</span></span><br><span class="line">	m1 = <span class="number">100</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v  %T\n&quot;</span>, m1, m1) <span class="comment">//100  main.MyInt</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意事项： 非本地类型不能定义方法，也就是说我们不能给别的包的类型定义方法。</p>
+<p><strong>结构体的匿名字段</strong><br>结构体允许其成员字段在声明时没有字段名而只有类型，这种没有名字的字段就称为匿名字段。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Person 结构体Person类型</span></span><br><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">	<span class="keyword">string</span></span><br><span class="line">	<span class="keyword">int</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	p1 := Person&#123;</span><br><span class="line">		<span class="string">&quot;小王子&quot;</span>,</span><br><span class="line">		<span class="number">18</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, p1)        <span class="comment">//main.Person&#123;string:&quot;北京&quot;, int:18&#125;</span></span><br><span class="line">	fmt.Println(p1.<span class="keyword">string</span>, p1.<span class="keyword">int</span>) <span class="comment">//北京 18</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>注意：这里匿名字段的说法并不代表没有字段名，而是默认会采用类型名作为字段名，结构体要求字段名称必须唯一，因此一个结构体中同种类型的匿名字段只能有一个。</p>
+<p><strong>嵌套结构体</strong><br>一个结构体中可以嵌套包含另一个结构体或结构体指针，就像下面的示例代码那样。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Address 地址结构体</span></span><br><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> &#123;</span><br><span class="line">	Province <span class="keyword">string</span></span><br><span class="line">	City     <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//User 用户结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name    <span class="keyword">string</span></span><br><span class="line">	Gender  <span class="keyword">string</span></span><br><span class="line">	Address Address</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	user1 := User&#123;</span><br><span class="line">		Name:   <span class="string">&quot;小王子&quot;</span>,</span><br><span class="line">		Gender: <span class="string">&quot;男&quot;</span>,</span><br><span class="line">		Address: Address&#123;</span><br><span class="line">			Province: <span class="string">&quot;山东&quot;</span>,</span><br><span class="line">			City:     <span class="string">&quot;威海&quot;</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;user1=%#v\n&quot;</span>, user1)<span class="comment">//user1=main.User&#123;Name:&quot;小王子&quot;, Gender:&quot;男&quot;, Address:main.Address&#123;Province:&quot;山东&quot;, City:&quot;威海&quot;&#125;&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>嵌套匿名字段</strong><br>上面user结构体中嵌套的Address结构体也可以采用匿名字段的方式，例如：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Address 地址结构体</span></span><br><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> &#123;</span><br><span class="line">	Province <span class="keyword">string</span></span><br><span class="line">	City     <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//User 用户结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name    <span class="keyword">string</span></span><br><span class="line">	Gender  <span class="keyword">string</span></span><br><span class="line">	Address <span class="comment">//匿名字段</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> user2 User</span><br><span class="line">	user2.Name = <span class="string">&quot;小王子&quot;</span></span><br><span class="line">	user2.Gender = <span class="string">&quot;男&quot;</span></span><br><span class="line">	user2.Address.Province = <span class="string">&quot;山东&quot;</span>    <span class="comment">// 匿名字段默认使用类型名作为字段名</span></span><br><span class="line">	user2.City = <span class="string">&quot;威海&quot;</span>                <span class="comment">// 匿名字段可以省略</span></span><br><span class="line">	fmt.Printf(<span class="string">&quot;user2=%#v\n&quot;</span>, user2) <span class="comment">//user2=main.User&#123;Name:&quot;小王子&quot;, Gender:&quot;男&quot;, Address:main.Address&#123;Province:&quot;山东&quot;, City:&quot;威海&quot;&#125;&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当访问结构体成员时会先在结构体中查找该字段，找不到再去嵌套的匿名字段中查找。</p>
+<p><strong>嵌套结构体的字段名冲突</strong><br>嵌套结构体内部可能存在相同的字段名。在这种情况下为了避免歧义需要通过指定具体的内嵌结构体字段名。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Address 地址结构体</span></span><br><span class="line"><span class="keyword">type</span> Address <span class="keyword">struct</span> &#123;</span><br><span class="line">	Province   <span class="keyword">string</span></span><br><span class="line">	City       <span class="keyword">string</span></span><br><span class="line">	CreateTime <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Email 邮箱结构体</span></span><br><span class="line"><span class="keyword">type</span> Email <span class="keyword">struct</span> &#123;</span><br><span class="line">	Account    <span class="keyword">string</span></span><br><span class="line">	CreateTime <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//User 用户结构体</span></span><br><span class="line"><span class="keyword">type</span> User <span class="keyword">struct</span> &#123;</span><br><span class="line">	Name   <span class="keyword">string</span></span><br><span class="line">	Gender <span class="keyword">string</span></span><br><span class="line">	Address</span><br><span class="line">	Email</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	<span class="keyword">var</span> user3 User</span><br><span class="line">	user3.Name = <span class="string">&quot;沙河娜扎&quot;</span></span><br><span class="line">	user3.Gender = <span class="string">&quot;男&quot;</span></span><br><span class="line">	<span class="comment">// user3.CreateTime = &quot;2019&quot; //ambiguous selector user3.CreateTime</span></span><br><span class="line">	user3.Address.CreateTime = <span class="string">&quot;2000&quot;</span> <span class="comment">//指定Address结构体中的CreateTime</span></span><br><span class="line">	user3.Email.CreateTime = <span class="string">&quot;2000&quot;</span>   <span class="comment">//指定Email结构体中的CreateTime</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结构体的“继承”</strong><br>Go语言中使用结构体也可以实现其他编程语言中面向对象的继承。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Animal 动物</span></span><br><span class="line"><span class="keyword">type</span> Animal <span class="keyword">struct</span> &#123;</span><br><span class="line">	name <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(a *Animal)</span> <span class="title">move</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%s会动！\n&quot;</span>, a.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Dog 狗</span></span><br><span class="line"><span class="keyword">type</span> Dog <span class="keyword">struct</span> &#123;</span><br><span class="line">	Feet    <span class="keyword">int8</span></span><br><span class="line">	*Animal <span class="comment">//通过嵌套匿名结构体实现继承</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(d *Dog)</span> <span class="title">wang</span><span class="params">()</span></span> &#123;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%s会汪汪汪~\n&quot;</span>, d.name)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	d1 := &amp;Dog&#123;</span><br><span class="line">		Feet: <span class="number">4</span>,</span><br><span class="line">		Animal: &amp;Animal&#123; <span class="comment">//注意嵌套的是结构体指针</span></span><br><span class="line">			name: <span class="string">&quot;乐乐&quot;</span>,</span><br><span class="line">		&#125;,</span><br><span class="line">	&#125;</span><br><span class="line">	d1.wang() <span class="comment">//乐乐会汪汪汪~</span></span><br><span class="line">	d1.move() <span class="comment">//乐乐会动！</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结构体字段的可见性</strong><br>结构体中字段大写开头表示可公开访问，小写表示私有（仅在定义当前结构体的包中可访问）。</p>
+<p><strong>结构体与JSON序列化</strong><br>JSON(JavaScript Object Notation) 是一种轻量级的数据交换格式。易于人阅读和编写。同时也易于机器解析和生成。JSON键值对是用来保存JS对象的一种方式，键/值对组合中的键名写在前面并用双引号””包裹，使用冒号:分隔，然后紧接着值；多个键值之间使用英文,分隔。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Student 学生</span></span><br><span class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID     <span class="keyword">int</span></span><br><span class="line">	Gender <span class="keyword">string</span></span><br><span class="line">	Name   <span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//Class 班级</span></span><br><span class="line"><span class="keyword">type</span> Class <span class="keyword">struct</span> &#123;</span><br><span class="line">	Title    <span class="keyword">string</span></span><br><span class="line">	Students []*Student</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	c := &amp;Class&#123;</span><br><span class="line">		Title:    <span class="string">&quot;101&quot;</span>,</span><br><span class="line">		Students: <span class="built_in">make</span>([]*Student, <span class="number">0</span>, <span class="number">200</span>),</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="number">10</span>; i++ &#123;</span><br><span class="line">		stu := &amp;Student&#123;</span><br><span class="line">			Name:   fmt.Sprintf(<span class="string">&quot;stu%02d&quot;</span>, i),</span><br><span class="line">			Gender: <span class="string">&quot;男&quot;</span>,</span><br><span class="line">			ID:     i,</span><br><span class="line">		&#125;</span><br><span class="line">		c.Students = <span class="built_in">append</span>(c.Students, stu)</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">//JSON序列化：结构体--&gt;JSON格式的字符串</span></span><br><span class="line">	data, err := json.Marshal(c)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;json marshal failed&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;json:%s\n&quot;</span>, data)</span><br><span class="line">	<span class="comment">//JSON反序列化：JSON格式的字符串--&gt;结构体</span></span><br><span class="line">	str := <span class="string">`&#123;&quot;Title&quot;:&quot;101&quot;,&quot;Students&quot;:[&#123;&quot;ID&quot;:0,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu00&quot;&#125;,&#123;&quot;ID&quot;:1,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu01&quot;&#125;,&#123;&quot;ID&quot;:2,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu02&quot;&#125;,&#123;&quot;ID&quot;:3,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu03&quot;&#125;,&#123;&quot;ID&quot;:4,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu04&quot;&#125;,&#123;&quot;ID&quot;:5,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu05&quot;&#125;,&#123;&quot;ID&quot;:6,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu06&quot;&#125;,&#123;&quot;ID&quot;:7,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu07&quot;&#125;,&#123;&quot;ID&quot;:8,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu08&quot;&#125;,&#123;&quot;ID&quot;:9,&quot;Gender&quot;:&quot;男&quot;,&quot;Name&quot;:&quot;stu09&quot;&#125;]&#125;`</span></span><br><span class="line">	c1 := &amp;Class&#123;&#125;</span><br><span class="line">	err = json.Unmarshal([]<span class="keyword">byte</span>(str), c1)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;json unmarshal failed!&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;%#v\n&quot;</span>, c1)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结构体标签（Tag）</strong><br>Tag是结构体的元信息，可以在运行的时候通过反射的机制读取出来。 Tag在结构体字段的后方定义，由一对反引号包裹起来，具体的格式如下：</p>
+<blockquote>
+<p><code>key1:&quot;value1&quot; key2:&quot;value2&quot;</code></p>
+</blockquote>
+<p>结构体tag由一个或多个键值对组成。键与值使用冒号分隔，值用双引号括起来。同一个结构体字段可以设置多个键值对tag，不同的键值对之间使用空格分隔。</p>
+<p><code>注意事项</code>： 为结构体编写Tag时，必须严格遵守键值对的规则。结构体标签的解析代码的容错能力很差，一旦格式写错，编译和运行时都不会提示任何错误，通过反射也无法正确取值。例如不要在key和value之间添加空格。</p>
+<p>例如我们为Student结构体的每个字段定义json序列化时使用的Tag：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Student 学生</span></span><br><span class="line"><span class="keyword">type</span> Student <span class="keyword">struct</span> &#123;</span><br><span class="line">	ID     <span class="keyword">int</span>    <span class="string">`json:&quot;id&quot;`</span> <span class="comment">//通过指定tag实现json序列化该字段时的key</span></span><br><span class="line">	Gender <span class="keyword">string</span> <span class="comment">//json序列化是默认使用字段名作为key</span></span><br><span class="line">	name   <span class="keyword">string</span> <span class="comment">//私有不能被json包访问</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	s1 := Student&#123;</span><br><span class="line">		ID:     <span class="number">1</span>,</span><br><span class="line">		Gender: <span class="string">&quot;男&quot;</span>,</span><br><span class="line">		name:   <span class="string">&quot;沙河娜扎&quot;</span>,</span><br><span class="line">	&#125;</span><br><span class="line">	data, err := json.Marshal(s1)</span><br><span class="line">	<span class="keyword">if</span> err != <span class="literal">nil</span> &#123;</span><br><span class="line">		fmt.Println(<span class="string">&quot;json marshal failed!&quot;</span>)</span><br><span class="line">		<span class="keyword">return</span></span><br><span class="line">	&#125;</span><br><span class="line">	fmt.Printf(<span class="string">&quot;json str:%s\n&quot;</span>, data) <span class="comment">//json str:&#123;&quot;id&quot;:1,&quot;Gender&quot;:&quot;男&quot;&#125;</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>结构体和方法补充知识点</strong><br>因为slice和map这两种数据类型都包含了指向底层数据的指针，因此我们在需要复制它们时要特别注意。我们来看下面的例子：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> Person <span class="keyword">struct</span> &#123;</span><br><span class="line">	name   <span class="keyword">string</span></span><br><span class="line">	age    <span class="keyword">int8</span></span><br><span class="line">	dreams []<span class="keyword">string</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">SetDreams</span><span class="params">(dreams []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	p.dreams = dreams</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</span><br><span class="line">	p1 := Person&#123;name: <span class="string">&quot;小王子&quot;</span>, age: <span class="number">18</span>&#125;</span><br><span class="line">	data := []<span class="keyword">string</span>&#123;<span class="string">&quot;吃饭&quot;</span>, <span class="string">&quot;睡觉&quot;</span>, <span class="string">&quot;打豆豆&quot;</span>&#125;</span><br><span class="line">	p1.SetDreams(data)</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 你真的想要修改 p1.dreams 吗？</span></span><br><span class="line">	data[<span class="number">1</span>] = <span class="string">&quot;不睡觉&quot;</span></span><br><span class="line">	fmt.Println(p1.dreams)  <span class="comment">// ?</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>正确的做法是在方法中使用传入的slice的拷贝进行结构体赋值。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(p *Person)</span> <span class="title">SetDreams</span><span class="params">(dreams []<span class="keyword">string</span>)</span></span> &#123;</span><br><span class="line">	p.dreams = <span class="built_in">make</span>([]<span class="keyword">string</span>, <span class="built_in">len</span>(dreams))</span><br><span class="line">	<span class="built_in">copy</span>(p.dreams, dreams)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>同样的问题也存在于返回值slice和map的情况，在实际编码过程中一定要注意这个问题。</p>
 
     
 
@@ -786,7 +388,7 @@ main<span class="token punctuation">.</span><span class="token function">main</s
         </li>
         <li>
           <strong>本文链接：</strong>
-          <a href="http://tianyi0801.github.io/2020/10/29/Go语言学习-部分（7）函数 闭包/" title="" target="_blank">http://tianyi0801.github.io/2020/10/29/Go语言学习-部分（7）函数 闭包/</a>
+          <a href="http://tianyi0801.github.io/2020/11/02/Go语言学习-部分（8）结构体/" title="" target="_blank">http://tianyi0801.github.io/2020/11/02/Go语言学习-部分（8）结构体/</a>
         </li>
         
         <li>
@@ -853,7 +455,7 @@ main<span class="token punctuation">.</span><span class="token function">main</s
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/10/29/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%887%EF%BC%89%E5%87%BD%E6%95%B0%20%E9%97%AD%E5%8C%85/" alt="微信分享二维码"> -->
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/11/02/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%888%EF%BC%89%E7%BB%93%E6%9E%84%E4%BD%93/" alt="微信分享二维码"> -->
     </div>
 </div>
 
@@ -868,17 +470,8 @@ main<span class="token punctuation">.</span><span class="token function">main</s
 
 <nav id="article-nav">
   
-    <a href="/2020/11/02/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%888%EF%BC%89%E7%BB%93%E6%9E%84%E4%BD%93/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          (no title)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/10/28/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%886%EF%BC%89%20%E5%88%87%E7%89%87%20map/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/10/29/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%887%EF%BC%89%E5%87%BD%E6%95%B0%20%E9%97%AD%E5%8C%85/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title"></div>
       <i class="icon-circle-right"></i>
     </a>
