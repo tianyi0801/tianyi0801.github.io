@@ -10,17 +10,19 @@
   <meta name="generator" content="hexo-theme-yilia-plus">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   
-  <meta name="description" content="深入理解go build 和 go install1.作用go build：用于测试编译包，在项目目录下生成可执行文件（有main包）。 go install：  主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）">
+  <meta name="description" content="ObjectMapperObjectMapper类是Jackson库的主要类。它提供了一系列方法，用于Java对象序列化为json字符串、json字符串反序列化为java对象以及对json字符串本身的处理">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Hexo">
-<meta property="og:url" content="http://tianyi0801.github.io/2020/10/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20go%20build%20%E5%92%8C%20go%20install/index.html">
+<meta property="og:url" content="http://tianyi0801.github.io/2020/11/09/jackson.ObjectMapper%20%E5%A4%84%E7%90%86json%EF%BC%88%E5%BA%8F%E5%88%97%E5%8C%96_%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%89/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="深入理解go build 和 go install1.作用go build：用于测试编译包，在项目目录下生成可执行文件（有main包）。 go install：  主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH&#x2F;pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH&#x2F;bin）">
+<meta property="og:description" content="ObjectMapperObjectMapper类是Jackson库的主要类。它提供了一系列方法，用于Java对象序列化为json字符串、json字符串反序列化为java对象以及对json字符串本身的处理">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-23T12:58:03.875Z">
-<meta property="article:modified_time" content="2020-11-08T10:50:53.455Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020110916373625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
+<meta property="article:published_time" content="2020-11-09T08:38:18.245Z">
+<meta property="article:modified_time" content="2020-11-09T08:39:53.023Z">
 <meta property="article:author" content="徐天一">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2020110916373625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center">
   
     <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -211,25 +213,18 @@
               class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-深入理解 go build 和 go install" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-jackson.ObjectMapper 处理json（序列化_反序列化）" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
   <div class="article-entry" itemprop="articleBody">
     
-    <h2 id="深入理解go-build-和-go-install"><a href="#深入理解go-build-和-go-install" class="headerlink" title="深入理解go build 和 go install"></a>深入理解go build 和 go install</h2><h3 id="1-作用"><a href="#1-作用" class="headerlink" title="1.作用"></a>1.作用</h3><p><strong>go build</strong>：用于测试编译包，在项目目录下生成可执行文件（有main包）。</p>
-<p><strong>go install</strong>：</p>
-<blockquote>
-<p>主要用来生成库和工具。一是编译包文件（无main包），将编译后的包文件放到 pkg 目录下（$GOPATH/pkg）。二是编译生成可执行文件（有main包），将可执行文件放到 bin 目录($GOPATH/bin）</p>
-</blockquote>
+    <p>ObjectMapper<br>ObjectMapper类是Jackson库的主要类。它提供了一系列方法，用于Java对象序列化为json字符串、json字符串反序列化为java对象以及对json字符串本身的处理</p>
 <a id="more"></a>
-<ol start="2">
-<li><p>相同点<br>都能生成可执行文件</p>
-</li>
-<li><p>不同点<br>go build 不能生成包文件, go install 可以生成包文件<br>go build 生成可执行文件在当前目录下， go install 生成可执行文件在bin目录下（$GOPATH/bin）</p>
-</li>
-<li><p>使用<br>环境介绍<br>$GOPATH/pkg 即图片中的 pkg 目录<br>$GOPATH/bin 即图片中的 bin目录<br>$GOPATH/src 即图片中的 src目录</p>
-</li>
-</ol>
+
+<p><code>！！！jackson-ObjectMapper要求json字符串里的引号为&quot;双引号&quot;（java中转义 \&quot; ），js中依然可选 &#39; / &quot;</code><br><img src="https://img-blog.csdnimg.cn/2020110916373625.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L1RpYW55aV8wODAxaQ==,size_16,color_FFFFFF,t_70#pic_center" alt="在这里插入图片描述"></p>
+<h4 id="常用注解-（添加在entity中）"><a href="#常用注解-（添加在entity中）" class="headerlink" title="常用注解 （添加在entity中）"></a>常用注解 （添加在entity中）</h4><p>@JsonProperty(“json_property_name”)：用在属性上；序列化/反序列化时，名称不一致时用</p>
+<p>@JsonCreator：用在构造方法上；jackson反序列化时，默认调用隐藏无参构造函数，当添加了有参构造函数，要使用@JsonCreator注解指定无参构造函数</p>
+<p>@JsonIgnore：用在属性上；序列化时，此属性不参与</p>
 
     
 
@@ -276,7 +271,7 @@
         </li>
         <li>
           <strong>本文链接：</strong>
-          <a href="http://tianyi0801.github.io/2020/10/23/深入理解 go build 和 go install/" title="" target="_blank">http://tianyi0801.github.io/2020/10/23/深入理解 go build 和 go install/</a>
+          <a href="http://tianyi0801.github.io/2020/11/09/jackson.ObjectMapper 处理json（序列化_反序列化）/" title="" target="_blank">http://tianyi0801.github.io/2020/11/09/jackson.ObjectMapper 处理json（序列化_反序列化）/</a>
         </li>
         
         <li>
@@ -343,7 +338,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/10/23/%E6%B7%B1%E5%85%A5%E7%90%86%E8%A7%A3%20go%20build%20%E5%92%8C%20go%20install/" alt="微信分享二维码"> -->
+     <!-- <img src="//pan.baidu.com/share/qrcode?url=http://tianyi0801.github.io/2020/11/09/jackson.ObjectMapper%20%E5%A4%84%E7%90%86json%EF%BC%88%E5%BA%8F%E5%88%97%E5%8C%96_%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%EF%BC%89/" alt="微信分享二维码"> -->
     </div>
 </div>
 
@@ -358,17 +353,8 @@
 
 <nav id="article-nav">
   
-    <a href="/2020/10/23/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%881%EF%BC%89/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          (no title)
-        
-      </div>
-    </a>
   
-  
-    <a href="/2020/10/23/Go%E5%9F%BA%E4%BA%8Eidea%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2020/11/02/Go%E8%AF%AD%E8%A8%80%E5%AD%A6%E4%B9%A0-%E9%83%A8%E5%88%86%EF%BC%888%EF%BC%89%E7%BB%93%E6%9E%84%E4%BD%93/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title"></div>
       <i class="icon-circle-right"></i>
     </a>
